@@ -11,3 +11,4 @@ pydantic-settings==2.12.0
 streamingjson==0.0.5
 uvicorn==0.41.0
 langgraph-checkpoint-mongodb==0.3.1
+python-dotenv == 1.2.2
