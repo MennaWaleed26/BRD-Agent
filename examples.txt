@@ -1,0 +1,166 @@
+{
+  "language_targets": ["English", "Arabic"],
+  "client": {
+    "name": "Nile Commerce Group",
+    "category": "Retail & E-commerce",
+    "country": ["Egypt", "UAE"]
+  },
+  "project": {
+    "title": "Omnichannel E-commerce Platform",
+    "desc": "A scalable e-commerce ecosystem integrating web, mobile, and logistics operations.",
+    "details": "The platform will support multi-vendor onboarding, advanced inventory management, real-time shipment tracking, AI-based product recommendations, and seamless payment integrations across multiple countries."
+  },
+  "platforms": [
+    {
+      "key": "web_admin",
+      "type": { "id": 1, "title": "Web Admin Dashboard" },
+      "screens_count": 45
+    },
+    {
+      "key": "customer_mobile",
+      "type": { "id": 2, "title": "Mobile Application" },
+      "screens_count": 60
+    },
+    {
+      "key": "delivery_app",
+      "type": { "id": 3, "title": "Delivery Mobile App" },
+      "screens_count": 25
+    }
+  ],
+  "tech_stack_ids": [
+    {"id": "ts1", "title": "Python", "desc": "Backend development"},
+    {"id": "ts2", "title": "FastAPI", "desc": "High-performance API framework"},
+    {"id": "ts3", "title": "Django", "desc": "Enterprise backend services"},
+    {"id": "ts4", "title": "Node.js", "desc": "Microservices and realtime APIs"},
+    {"id": "ts5", "title": "React", "desc": "Frontend web development"},
+    {"id": "ts6", "title": "Next.js", "desc": "SSR frontend framework"},
+    {"id": "ts7", "title": "Flutter", "desc": "Cross-platform mobile apps"},
+    {"id": "ts8", "title": "React Native", "desc": "Hybrid mobile development"},
+    {"id": "ts9", "title": "PostgreSQL", "desc": "Primary relational database"},
+    {"id": "ts10", "title": "MongoDB", "desc": "Document database"},
+    {"id": "ts11", "title": "Redis", "desc": "Caching and queues"},
+    {"id": "ts12", "title": "Docker", "desc": "Containerization"},
+    {"id": "ts13", "title": "Kubernetes", "desc": "Container orchestration"},
+    {"id": "ts14", "title": "AWS", "desc": "Cloud infrastructure"},
+    {"id": "ts15", "title": "Azure", "desc": "Cloud hosting"},
+    {"id": "ts16", "title": "OpenAI API", "desc": "AI integrations"},
+    {"id": "ts17", "title": "LangGraph", "desc": "Agent workflows"},
+    {"id": "ts18", "title": "LangChain", "desc": "LLM orchestration"},
+    {"id": "ts19", "title": "ElasticSearch", "desc": "Search engine"},
+    {"id": "ts20", "title": "Kafka", "desc": "Event streaming"}
+  ],
+  "constraints": {
+    "deadline": {
+      "count": 180,
+      "type": { "id": 1, "title": "days" }
+    },
+    "is_agile": true
+  }
+}
+
+
+
+
+
+
+{
+  "language_targets": ["English"],
+  "client": {
+    "name": "MedCare Solutions",
+    "category": "Healthcare Technology",
+    "country": ["Saudi Arabia"]
+  },
+  "project": {
+    "title": "Hospital Management System",
+    "desc": "Digital transformation platform for hospitals and clinics.",
+    "details": ""
+  },
+  "platforms": [
+    {
+      "key": "hospital_dashboard",
+      "type": { "id": 1, "title": "Web Dashboard" },
+      "screens_count": 35
+    },
+    {
+      "key": "patient_mobile",
+      "type": { "id": 2, "title": "Mobile Application" },
+      "screens_count": 40
+    }
+  ],
+  "tech_stack_ids": [
+    {"id": "ts1", "title": "Python", "desc": "Backend services"},
+    {"id": "ts2", "title": "FastAPI", "desc": "API development"},
+    {"id": "ts3", "title": "Django", "desc": "Admin backend"},
+    {"id": "ts4", "title": "React", "desc": "Frontend UI"},
+    {"id": "ts5", "title": "Vue.js", "desc": "Alternative frontend"},
+    {"id": "ts6", "title": "Flutter", "desc": "Mobile apps"},
+    {"id": "ts7", "title": "Swift", "desc": "iOS development"},
+    {"id": "ts8", "title": "Kotlin", "desc": "Android development"},
+    {"id": "ts9", "title": "PostgreSQL", "desc": "Database"},
+    {"id": "ts10", "title": "MySQL", "desc": "Relational DB"},
+    {"id": "ts11", "title": "Redis", "desc": "Caching"},
+    {"id": "ts12", "title": "RabbitMQ", "desc": "Message broker"},
+    {"id": "ts13", "title": "Docker", "desc": "Containers"},
+    {"id": "ts14", "title": "AWS", "desc": "Cloud hosting"},
+    {"id": "ts15", "title": "CI/CD", "desc": "Automation pipelines"},
+    {"id": "ts16", "title": "Terraform", "desc": "Infrastructure as code"},
+    {"id": "ts17", "title": "OpenAI API", "desc": "AI assistant features"}
+  ],
+  "constraints": {
+    "deadline": {
+      "count": 120,
+      "type": { "id": 1, "title": "days" }
+    },
+    "is_agile": true
+  }
+}
+
+
+
+
+{
+  "language_targets": ["English", "French"],
+  "client": {
+    "name": "FinEdge Consulting",
+    "category": "FinTech",
+    "country": ["France", "Germany"]
+  },
+  "project": {
+    "title": "Digital Banking Transformation",
+    "desc": "Modernization of legacy banking infrastructure.",
+    "details": ""
+  },
+  "platforms": [],
+  "tech_stack_ids": [
+    {"id": "ts1", "title": "Java", "desc": "Core banking backend"},
+    {"id": "ts2", "title": "Spring Boot", "desc": "Microservices"},
+    {"id": "ts3", "title": "Python", "desc": "Data processing"},
+    {"id": "ts4", "title": "FastAPI", "desc": "API services"},
+    {"id": "ts5", "title": "React", "desc": "Frontend apps"},
+    {"id": "ts6", "title": "Angular", "desc": "Enterprise frontend"},
+    {"id": "ts7", "title": "Flutter", "desc": "Mobile banking"},
+    {"id": "ts8", "title": "PostgreSQL", "desc": "Transactional DB"},
+    {"id": "ts9", "title": "Oracle DB", "desc": "Legacy systems"},
+    {"id": "ts10", "title": "MongoDB", "desc": "Document storage"},
+    {"id": "ts11", "title": "Redis", "desc": "Caching layer"},
+    {"id": "ts12", "title": "Kafka", "desc": "Event streaming"},
+    {"id": "ts13", "title": "Docker", "desc": "Containers"},
+    {"id": "ts14", "title": "Kubernetes", "desc": "Orchestration"},
+    {"id": "ts15", "title": "AWS", "desc": "Cloud infrastructure"},
+    {"id": "ts16", "title": "Google Cloud", "desc": "Multi-cloud"},
+    {"id": "ts17", "title": "Azure DevOps", "desc": "CI/CD pipelines"},
+    {"id": "ts18", "title": "LangChain", "desc": "AI workflows"},
+    {"id": "ts19", "title": "LangGraph", "desc": "Agent orchestration"},
+    {"id": "ts20", "title": "OpenAI API", "desc": "AI banking assistant"},
+    {"id": "ts21", "title": "ElasticSearch", "desc": "Search & analytics"},
+    {"id": "ts22", "title": "Prometheus", "desc": "Monitoring"},
+    {"id": "ts23", "title": "Grafana", "desc": "Observability dashboards"}
+  ],
+  "constraints": {
+    "deadline": {
+      "count": 240,
+      "type": { "id": 1, "title": "days" }
+    },
+    "is_agile": false
+  }
+}
