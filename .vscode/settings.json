@@ -1,0 +1,4 @@
+{
+  "python.defaultInterpreterPath": "/home/ayaha/projects/BRD-Agent/.venv/bin/python",
+  "python.terminal.activateEnvironment": true
+}

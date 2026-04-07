@@ -15,7 +15,7 @@ from src.schemas.sections_output import (
 from src.schemas.response import BRDResponsePayload
 
 
-class GraphState(TypedDict):
+class GraphState(TypedDict ):
     """
     LangGraph state for BRD generation.
 
@@ -27,6 +27,7 @@ class GraphState(TypedDict):
 
     # normalized input from backend
     context: Dict[str, Any]
+    enhanced_context: Dict[str, Any]
 
     # english generated sections
     proposed_system_en: Optional[ProposedSystemEnglishOutput]

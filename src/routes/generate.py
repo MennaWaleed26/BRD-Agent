@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException,status
+from fastapi import APIRouter, HTTPException,status # type: ignore
 from src.schemas.request_models import BRDRequestModel  # type: ignore
 from src.services.BRDService import BRDService # type: ignore
 

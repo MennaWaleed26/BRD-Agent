@@ -1,10 +1,13 @@
-from pydantic import BaseModel, Field
+from pickle import LIST
+
+from pydantic import BaseModel, Field # type: ignore
 from typing import Literal, Union, List
 
 from src.schemas.common import LocalizedText
 from src.schemas.sections_content import (
     ProposedSystemItemtLang,
     TechnologyStackContentLang,
+    TimelinePhaseLang,
     GenericContentLang,
 )
 
@@ -24,11 +27,10 @@ class ProposedSystemEnglishOutput(BaseModel):
 
 class TechnologyStackEnglishOutput(BaseModel):
     key: Literal["technology_stack"] = "technology_stack"
-    title: str = Field(description="English section title")
-    content: TechnologyStackContentLang = Field(
-        description="Structured English content for technology stack"
+    title: Literal["Technologies Used"] = "Technologies Used"
+    content: List[TechnologyStackContentLang] = Field(
+        description="Ordered list of technology subsections"
     )
-
 
 class FunctionalUnitsEnglishOutput(BaseModel):
     key: Literal["functional_units"] = "functional_units"
@@ -40,11 +42,10 @@ class FunctionalUnitsEnglishOutput(BaseModel):
 
 class TimelineEnglishOutput(BaseModel):
     key: Literal["timeline"] = "timeline"
-    title: str = Field(description="English section title")
-    content: GenericContentLang = Field(
-        description="Structured English content for timeline"
+    title: Literal["Implementation Timeline"] = "Implementation Timeline"
+    content: List[TimelinePhaseLang] = Field(
+        description="Ordered list of implementation phases"
     )
-
 
 EnglishSectionOutput = Union[
     ProposedSystemEnglishOutput,

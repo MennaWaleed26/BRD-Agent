@@ -1,3 +1,5 @@
+from curses import raw
+
 from src.schemas.request_models import BRDRequestModel
 from typing import Dict,Any
 import json
@@ -17,7 +19,9 @@ class ProjectContext:
         if raw_request.platforms :
             self.platforms=[p.key for p in raw_request.platforms]
         
-        self.tech_stack=raw_request.tech_stack_ids or []
+        self.tech_stack=[]
+        if raw_request.tech_stack_ids:
+            self.tech_stack=[ tech_stack.title for tech_stack in raw_request.tech_stack_ids]
         
         c=raw_request.constraints
         if c:
@@ -34,7 +38,7 @@ class ProjectContext:
             "client_name": self.client_name,
             "client_catrgory":self.client_category,
             "platforms":self.platforms,
-            "tech_stack":self.tech_stack,
+            "tech_stacks":self.tech_stack,
             "is_agile":self.is_agile,
             "deadline_count":self.deadline_count,
             "deadline_type":self.deadline_type
