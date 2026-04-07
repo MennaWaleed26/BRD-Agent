@@ -5,6 +5,7 @@ from src.graph.nodes import (
     preparation_node,
     technology_stack_node,
     timeline_node,
+    functional_req_planner_node
 )
 
 def create_brd_graph():
@@ -15,11 +16,12 @@ def create_brd_graph():
     workflow.add_node("preparation_node", preparation_node)
     workflow.add_node("technology_stack_node", technology_stack_node)
     workflow.add_node("timeline_node", timeline_node)
+    workflow.add_node("functional_req_planner_node", functional_req_planner_node)
     
     # workflow.add_edge(START, "proposed_system")
     workflow.add_edge(START, "preparation_node")
-    workflow.add_edge("preparation_node", "technology_stack_node")
-    workflow.add_edge("technology_stack_node",END)
+    workflow.add_edge("preparation_node", "functional_req_planner_node")
+    workflow.add_edge("functional_req_planner_node",END)
     
     return workflow.compile()
 

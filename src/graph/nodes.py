@@ -20,6 +20,7 @@ from src.schemas.sections_output import (
     TechnologyStackArabicOutput,
     TechnologyStackSection,
     TechnologyStackSectionContent,
+    FunctionalRequirementsPlannerOutput,
     FunctionalUnitsEnglishOutput,
     FunctionalUnitsArabicOutput,
     FunctionalUnitsSection,
@@ -32,6 +33,8 @@ from src.graph.prompts.proposed_system_prompt import proposed_system_prompt_temp
 from src.graph.prompts.preparation_prompt import preparation_prompt_template
 from src.graph.prompts.timeline_prompt import timeline_prompt_template
 from src.graph.prompts.technology_stack_prompt import technology_stack_prompt_template
+from src.graph.prompts.functional_req_planner_prompt import functional_requirements_planner_prompt_template
+
 from src.helpers.config import settings
 
 llm = ChatOpenAI(model="gpt-5.4-nano", api_key=settings.OPENAI_API_KEY) # type: ignore
@@ -120,3 +123,11 @@ def timeline_node(state:GraphState):
     )
     
     return {"timeline_en":response}
+
+def functional_req_planner_node(state:GraphState):
+    response=generate_english_section(
+        state=state,
+        prompt_template=functional_requirements_planner_prompt_template,
+        output_model= FunctionalRequirementsPlannerOutput
+    )
+    return {"functional_requirements_plan":response}

@@ -8,6 +8,7 @@ from src.schemas.sections_content import (
     ProposedSystemItemtLang,
     TechnologyStackContentLang,
     TimelinePhaseLang,
+    FunctionalGroupPlan,
     GenericContentLang,
 )
 
@@ -31,6 +32,14 @@ class TechnologyStackEnglishOutput(BaseModel):
     content: List[TechnologyStackContentLang] = Field(
         description="Ordered list of technology subsections"
     )
+
+class FunctionalRequirementsPlannerOutput(BaseModel):
+    key: Literal["functional_requirements_plan"] = "functional_requirements_plan"
+    title: Literal["Detailed Functional Units Plan"] = "Detailed Functional Units Plan"
+
+    operations_and_project_lifecycle: FunctionalGroupPlan
+    internal_business_management: FunctionalGroupPlan
+    client_digital_experience: FunctionalGroupPlan
 
 class FunctionalUnitsEnglishOutput(BaseModel):
     key: Literal["functional_units"] = "functional_units"

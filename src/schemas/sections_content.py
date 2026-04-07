@@ -44,7 +44,28 @@ class TimelinePhaseLang(BaseModel):
     steps: List[str] = Field(
         description="List of realistic activities or deliverables for this phase"
     )
+class FeatureOutline(BaseModel):
+    title:str=Field(description="Short feature title")
+    purpose:str=Field(description="short business purpose of the feature")
 
+class ModuleOutline(BaseModel):
+    title: str = Field(description="Business-friendly module title")
+    intro: str = Field(description="Short module introduction")
+    features: List[FeatureOutline] = Field(default_factory=list)
+
+class FunctionalGroupPlan(BaseModel):
+    group_key: str = Field(description="Stable internal group key")
+    group_title: str = Field(description="Business-friendly group title")
+    group_intro: str = Field(description="Short group introduction")
+    modules: List[ModuleOutline] = Field(default_factory=list)
+
+    """
+    Temporary generic content model for sections whose final structure
+    will be designed later, like functional_units و timeline.
+    """
+    title: str = Field(description="Short internal title for the section content")
+    content: str = Field(description="Main descriptive content")
+    
 class GenericContentLang(BaseModel):
     """
     Temporary generic content model for sections whose final structure

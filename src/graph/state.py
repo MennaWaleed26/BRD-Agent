@@ -29,6 +29,7 @@ class GraphState(TypedDict ):
     context: Dict[str, Any]
     enhanced_context: Dict[str, Any]
 
+    functional_requirements_plan: Dict[str, Any]
     # english generated sections
     proposed_system_en: Optional[ProposedSystemEnglishOutput]
     technology_stack_en: Optional[TechnologyStackEnglishOutput]
