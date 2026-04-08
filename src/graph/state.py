@@ -5,17 +5,17 @@ from typing import TypedDict, Dict, Any, Optional
 from src.schemas.sections_output import (
     ProposedSystemEnglishOutput,
     TechnologyStackEnglishOutput,
-    FunctionalUnitsEnglishOutput,
+    FunctionalRequirementsGroupOutput,
+    FunctionalRequirementsEnglishOutput,
     TimelineEnglishOutput,
     ProposedSystemArabicOutput,
     TechnologyStackArabicOutput,
-    FunctionalUnitsArabicOutput,
     TimelineArabicOutput,
 )
-from src.schemas.response import BRDResponsePayload
 
 
-class GraphState(TypedDict ):
+
+class GraphState(TypedDict):
     """
     LangGraph state for BRD generation.
 
@@ -31,16 +31,17 @@ class GraphState(TypedDict ):
 
     functional_requirements_plan: Dict[str, Any]
     # english generated sections
-    proposed_system_en: Optional[ProposedSystemEnglishOutput]
-    technology_stack_en: Optional[TechnologyStackEnglishOutput]
-    functional_units_en: Optional[FunctionalUnitsEnglishOutput]
-    timeline_en: Optional[TimelineEnglishOutput]
+    proposed_system_en: Dict[str, Any]
+    technology_stack_en: Dict[str, Any]
+    timeline_en: Dict[str, Any]
+    
+    functional_requirements_operations: Dict[str, Any]
+    functional_requirements_internal_management: Dict[str, Any]
+    functional_requirements_client_experience: Dict[str, Any]
+    functional_requirements_en: Dict[str, Any]
 
-    # arabic translated sections
-    proposed_system_ar: Optional[ProposedSystemArabicOutput]
-    technology_stack_ar: Optional[TechnologyStackArabicOutput]
-    functional_units_ar: Optional[FunctionalUnitsArabicOutput]
-    timeline_ar: Optional[TimelineArabicOutput]
 
-    # final response payload
-    final_response: Optional[BRDResponsePayload]
+    english_report: Dict[str, Any]
+    arabic_report: Dict[str, Any]
+
+    final_response: Dict[str, Any]

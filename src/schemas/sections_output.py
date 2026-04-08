@@ -9,6 +9,7 @@ from src.schemas.sections_content import (
     TechnologyStackContentLang,
     TimelinePhaseLang,
     FunctionalGroupPlan,
+    FunctionalModuleDetail,
     GenericContentLang,
 )
 
@@ -41,12 +42,17 @@ class FunctionalRequirementsPlannerOutput(BaseModel):
     internal_business_management: FunctionalGroupPlan
     client_digital_experience: FunctionalGroupPlan
 
-class FunctionalUnitsEnglishOutput(BaseModel):
-    key: Literal["functional_units"] = "functional_units"
-    title: str = Field(description="English section title")
-    content: GenericContentLang = Field(
-        description="Structured English content for functional units"
-    )
+class FunctionalRequirementsGroupOutput(BaseModel):
+    group_key: str = Field(description="Stable internal group key")
+    group_title: str = Field(description="Business-friendly group title")
+    group_intro: str = Field(description="Short introduction for the group")
+    modules: List[FunctionalModuleDetail] = Field(default_factory=list)
+
+
+class FunctionalRequirementsEnglishOutput(BaseModel):
+    key: Literal["functional_requirements"] = "functional_requirements"
+    title: Literal["Detailed Functional Units"] = "Detailed Functional Units"
+    content: List[FunctionalRequirementsGroupOutput] = Field(default_factory=list)
 
 
 class TimelineEnglishOutput(BaseModel):
@@ -59,122 +65,195 @@ class TimelineEnglishOutput(BaseModel):
 EnglishSectionOutput = Union[
     ProposedSystemEnglishOutput,
     TechnologyStackEnglishOutput,
-    FunctionalUnitsEnglishOutput,
+    FunctionalRequirementsEnglishOutput,
     TimelineEnglishOutput,
 ]
 
 
-# ---------------------------
-# Arabic-only translation outputs
-# ---------------------------
-
 class ProposedSystemArabicOutput(BaseModel):
     key: Literal["proposed_system"] = "proposed_system"
     title: str = Field(description="Arabic section title")
-    content: List[ProposedSystemItemtLang] = Field(
-        default_factory=list,
-        description="Structured Arabic content for proposed system"
-    )
+    content: List[ProposedSystemItemtLang] = Field(default_factory=list)
 
 
 class TechnologyStackArabicOutput(BaseModel):
     key: Literal["technology_stack"] = "technology_stack"
     title: str = Field(description="Arabic section title")
-    content: TechnologyStackContentLang = Field(
-        description="Structured Arabic content for technology stack"
-    )
+    content: List[TechnologyStackContentLang] = Field(default_factory=list)
 
 
-class FunctionalUnitsArabicOutput(BaseModel):
-    key: Literal["functional_units"] = "functional_units"
+class FunctionalRequirementsArabicOutput(BaseModel):
+    key: Literal["functional_requirements"] = "functional_requirements"
     title: str = Field(description="Arabic section title")
-    content: GenericContentLang = Field(
-        description="Structured Arabic content for functional units"
-    )
+    content: List[FunctionalRequirementsGroupOutput] = Field(default_factory=list)
 
 
 class TimelineArabicOutput(BaseModel):
     key: Literal["timeline"] = "timeline"
     title: str = Field(description="Arabic section title")
-    content: GenericContentLang = Field(
-        description="Structured Arabic content for timeline"
-    )
+    content: List[TimelinePhaseLang] = Field(default_factory=list)
 
 
-ArabicSectionOutput = Union[
-    ProposedSystemArabicOutput,
-    TechnologyStackArabicOutput,
-    FunctionalUnitsArabicOutput,
-    TimelineArabicOutput,
-]
+
+# =========================
+# Merged report schemas
+# =========================
+
+class BRDEnglishSections(BaseModel):
+    proposed_system: ProposedSystemEnglishOutput
+    technology_stack: TechnologyStackEnglishOutput
+    functional_requirements: FunctionalRequirementsEnglishOutput
+    timeline: TimelineEnglishOutput
 
 
-# ---------------------------
-# Final bilingual section outputs
-# ---------------------------
+class BRDArabicSections(BaseModel):
+    proposed_system: ProposedSystemArabicOutput
+    technology_stack: TechnologyStackArabicOutput
+    functional_requirements: FunctionalRequirementsArabicOutput
+    timeline: TimelineArabicOutput
+    
+    
+# =========================
+# Localized wrappers
+# =========================
 
-class ProposedSystemSectionContent(BaseModel):
-    en: List[ProposedSystemItemtLang] 
-    ar: List[ProposedSystemItemtLang] 
-
-
-class TechnologyStackSectionContent(BaseModel):
-    en: TechnologyStackContentLang
-    ar: TechnologyStackContentLang
-
-
-class GenericSectionContent(BaseModel):
-    en: GenericContentLang
-    ar: GenericContentLang
+class ProposedSystemLocalizedOutput(BaseModel):
+    en: ProposedSystemEnglishOutput
+    ar: ProposedSystemArabicOutput
 
 
-class ProposedSystemSection(BaseModel):
-    key: Literal["proposed_system"] = "proposed_system"
-    title: LocalizedText = Field(
-        default_factory=lambda: LocalizedText(
-            en="Proposed System",
-            ar="النظام المقترح",
-        )
-    )
-    content: ProposedSystemSectionContent
+class TechnologyStackLocalizedOutput(BaseModel):
+    en: TechnologyStackEnglishOutput
+    ar: TechnologyStackArabicOutput
 
 
-class TechnologyStackSection(BaseModel):
-    key: Literal["technology_stack"] = "technology_stack"
-    title: LocalizedText = Field(
-        default_factory=lambda: LocalizedText(
-            en="Technologies Used",
-            ar="التقنيات المستخدمة",
-        )
-    )
-    content: TechnologyStackSectionContent
+class FunctionalRequirementsLocalizedOutput(BaseModel):
+    en: FunctionalRequirementsEnglishOutput
+    ar: FunctionalRequirementsArabicOutput
 
 
-class FunctionalUnitsSection(BaseModel):
-    key: Literal["functional_units"] = "functional_units"
-    title: LocalizedText = Field(
-        default_factory=lambda: LocalizedText(
-            en="Functional Units",
-            ar="الوحدات الوظيفية",
-        )
-    )
-    content: GenericSectionContent
+class TimelineLocalizedOutput(BaseModel):
+    en: TimelineEnglishOutput
+    ar: TimelineArabicOutput
 
 
-class TimelineSection(BaseModel):
-    key: Literal["timeline"] = "timeline"
-    title: LocalizedText = Field(
-        default_factory=lambda: LocalizedText(
-            en="Timeline",
-            ar="الجدول الزمني",
-        )
-    )
-    content: GenericSectionContent
+class BRDResponsePayload(BaseModel):
+    proposed_system: ProposedSystemLocalizedOutput
+    technology_stack: TechnologyStackLocalizedOutput
+    functional_requirements: FunctionalRequirementsLocalizedOutput
+    timeline: TimelineLocalizedOutput
+    
+# # ---------------------------
+# # Arabic-only translation outputs
+# # ---------------------------
+
+# class ProposedSystemArabicOutput(BaseModel):
+#     key: Literal["proposed_system"] = "proposed_system"
+#     title: str = Field(description="Arabic section title")
+#     content: List[ProposedSystemItemtLang] = Field(
+#         default_factory=list,
+#         description="Structured Arabic content for proposed system"
+#     )
 
 
-BRDSection = Union[
-    ProposedSystemSection,
-    TechnologyStackSection,
-    FunctionalUnitsSection,
-    TimelineSection,
-]
+# class TechnologyStackArabicOutput(BaseModel):
+#     key: Literal["technology_stack"] = "technology_stack"
+#     title: str = Field(description="Arabic section title")
+#     content: TechnologyStackContentLang = Field(
+#         description="Structured Arabic content for technology stack"
+#     )
+
+
+# class FunctionalUnitsArabicOutput(BaseModel):
+#     key: Literal["functional_units"] = "functional_units"
+#     title: str = Field(description="Arabic section title")
+#     content: GenericContentLang = Field(
+#         description="Structured Arabic content for functional units"
+#     )
+
+
+# class TimelineArabicOutput(BaseModel):
+#     key: Literal["timeline"] = "timeline"
+#     title: str = Field(description="Arabic section title")
+#     content: GenericContentLang = Field(
+#         description="Structured Arabic content for timeline"
+#     )
+
+
+# ArabicSectionOutput = Union[
+#     ProposedSystemArabicOutput,
+#     TechnologyStackArabicOutput,
+#     FunctionalUnitsArabicOutput,
+#     TimelineArabicOutput,
+# ]
+
+
+# # ---------------------------
+# # Final bilingual section outputs
+# # ---------------------------
+
+# class ProposedSystemSectionContent(BaseModel):
+#     en: List[ProposedSystemItemtLang] 
+#     ar: List[ProposedSystemItemtLang] 
+
+
+# class TechnologyStackSectionContent(BaseModel):
+#     en: TechnologyStackContentLang
+#     ar: TechnologyStackContentLang
+
+
+# class GenericSectionContent(BaseModel):
+#     en: GenericContentLang
+#     ar: GenericContentLang
+
+
+# class ProposedSystemSection(BaseModel):
+#     key: Literal["proposed_system"] = "proposed_system"
+#     title: LocalizedText = Field(
+#         default_factory=lambda: LocalizedText(
+#             en="Proposed System",
+#             ar="النظام المقترح",
+#         )
+#     )
+#     content: ProposedSystemSectionContent
+
+
+# class TechnologyStackSection(BaseModel):
+#     key: Literal["technology_stack"] = "technology_stack"
+#     title: LocalizedText = Field(
+#         default_factory=lambda: LocalizedText(
+#             en="Technologies Used",
+#             ar="التقنيات المستخدمة",
+#         )
+#     )
+#     content: TechnologyStackSectionContent
+
+
+# class FunctionalUnitsSection(BaseModel):
+#     key: Literal["functional_units"] = "functional_units"
+#     title: LocalizedText = Field(
+#         default_factory=lambda: LocalizedText(
+#             en="Functional Units",
+#             ar="الوحدات الوظيفية",
+#         )
+#     )
+#     content: GenericSectionContent
+
+
+# class TimelineSection(BaseModel):
+#     key: Literal["timeline"] = "timeline"
+#     title: LocalizedText = Field(
+#         default_factory=lambda: LocalizedText(
+#             en="Timeline",
+#             ar="الجدول الزمني",
+#         )
+#     )
+#     content: GenericSectionContent
+
+
+# BRDSection = Union[
+#     ProposedSystemSection,
+#     TechnologyStackSection,
+#     FunctionalUnitsSection,
+#     TimelineSection,
+# ]

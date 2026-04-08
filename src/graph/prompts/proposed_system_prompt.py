@@ -25,7 +25,7 @@ Field names in the context may include:
 - project_idea
 - project_details
 - client_name
-- client_catrgory
+- client_category
 - platforms
 - tech_stacks
 - is_agile
@@ -36,7 +36,7 @@ Field names in the context may include:
 Use the context in this priority order:
 - Highest priority: project_details
 - Then: project_idea
-- Then: client_catrgory and project_name
+- Then: client_category and project_name
 
 If project_details is present, it must strongly shape the generated section.
 

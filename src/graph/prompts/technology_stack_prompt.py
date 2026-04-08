@@ -20,7 +20,7 @@ Field names in the context may include:
 - project_idea
 - project_details
 - client_name
-- client_catrgory
+- client_category
 - platforms
 - tech_stacks
 - is_agile

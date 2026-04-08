@@ -5,7 +5,7 @@ class PreparationOutput(BaseModel):
     project_idea: str = ""
     project_details: str = ""
     client_name: str = ""
-    client_catrgory: str = ""
+    client_category: str = ""
     platforms: List[str] = Field(default_factory=list)
     tech_stacks: List[str] = Field(default_factory=list)
     is_agile: Optional[bool] = None

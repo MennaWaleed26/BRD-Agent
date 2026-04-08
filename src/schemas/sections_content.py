@@ -59,13 +59,43 @@ class FunctionalGroupPlan(BaseModel):
     group_intro: str = Field(description="Short group introduction")
     modules: List[ModuleOutline] = Field(default_factory=list)
 
-    """
-    Temporary generic content model for sections whose final structure
-    will be designed later, like functional_units و timeline.
-    """
-    title: str = Field(description="Short internal title for the section content")
-    content: str = Field(description="Main descriptive content")
-    
+
+
+
+# =========================
+# Group generation schemas
+# =========================
+
+class FeatureDetail(BaseModel):
+    title: str = Field(description="Feature title")
+    description: str = Field(description="Business-friendly explanation of the feature")
+    technical_implementation: List[str] = Field(
+        default_factory=list,
+        description="Concrete implementation-oriented steps"
+    )
+    additional_ideas: List[str] = Field(
+        default_factory=list,
+        description="Optional ideas that add future value"
+    )
+    technologies_used: List[str] = Field(
+        default_factory=list,
+        description="Actual technologies only, up to 4 items"
+    )
+
+
+
+class FunctionalModuleDetail(BaseModel):
+    title: str = Field(description="Module title")
+    intro: str = Field(description="Short module introduction")
+    features: List[FeatureDetail] = Field(default_factory=list)
+
+
+
+
+
+
+
+
 class GenericContentLang(BaseModel):
     """
     Temporary generic content model for sections whose final structure
