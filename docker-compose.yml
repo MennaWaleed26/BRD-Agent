@@ -1,0 +1,9 @@
+services:
+  brd-agent:
+    image: ghcr.io/mennawaleed26/brd-agent:latest
+    container_name: brd-agent
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
