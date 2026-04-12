@@ -4,6 +4,7 @@ from dotenv import load_dotenv # type: ignore
 from src.routes.generate import brd_router # type: ignore
 from src.helpers.config import settings
 from langchain_openai import ChatOpenAI # type: ignore
+
 load_dotenv()
 app=FastAPI()
 

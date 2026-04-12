@@ -12,10 +12,15 @@ Rules:
 - Do not add any new content.
 - Preserve all numeric values exactly.
 - Preserve all keys exactly as they are.
-- Preserve `key`, `group_key`, `phase_number`, `duration_count`, and `duration_type` exactly as they are.
+- Preserve `key`, `group_key`, `phase_number`, and `duration_count` exactly as they are.
+- Translate `duration_type` in timeline entries as follows:
+  - "days" -> "أيام"
+  - "weeks" -> "أسابيع"
+- Translate all timeline phase titles, duration strings, and step texts into Arabic.
 - Preserve technology and product names in English when appropriate, such as:
   Flutter, React, PostgreSQL, Firebase, Node.js, Docker, AWS, API, ERP, CRM.
 - Keep the tone professional, business-friendly, and clear.
+- Do not leave English text in the Arabic output unless it is a technology, product, platform, or brand name.
 
 English report:
 {english_report}

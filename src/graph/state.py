@@ -2,17 +2,6 @@ from typing import TypedDict, Optional, Dict, Any
 
 from typing import TypedDict, Dict, Any, Optional
 
-from src.schemas.sections_output import (
-    ProposedSystemEnglishOutput,
-    TechnologyStackEnglishOutput,
-    FunctionalRequirementsGroupOutput,
-    FunctionalRequirementsEnglishOutput,
-    TimelineEnglishOutput,
-    ProposedSystemArabicOutput,
-    TechnologyStackArabicOutput,
-    TimelineArabicOutput,
-)
-
 
 
 class GraphState(TypedDict):

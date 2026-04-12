@@ -16,7 +16,7 @@ from src.schemas.sections_output import (
     ProposedSystemEnglishOutput,
     TechnologyStackEnglishOutput,
     FunctionalRequirementsPlannerOutput,
-    FunctionalRequirementsGroupOutput,
+    FunctionalRequirementsGroupEnglishOutput,
     FunctionalRequirementsEnglishOutput,
     TimelineEnglishOutput,
     BRDEnglishSections,
@@ -102,19 +102,19 @@ def generate_english_section(
 def generate_functional_requirements_group(
     enhanced_context: Dict[str, Any],
     group_plan: Dict[str, Any],
-) -> FunctionalRequirementsGroupOutput:
+) -> FunctionalRequirementsGroupEnglishOutput:
     """
     Generate functional requirements for a specific group
     using the shared structured invocation helper.
     """
 
-    response: FunctionalRequirementsGroupOutput = invoke_structured(
+    response: FunctionalRequirementsGroupEnglishOutput = invoke_structured(
         prompt_template=functional_requirements_group_prompt_template,
         prompt_variables={
             "enhanced_context": enhanced_context,
             "group_plan": group_plan,
         },
-        output_model=FunctionalRequirementsGroupOutput,
+        output_model=FunctionalRequirementsGroupEnglishOutput,
     )
 
     return response
@@ -210,9 +210,9 @@ def functional_requirements_client_experience_node(state: GraphState) -> Dict[st
 
 
 def functional_requirements_merge_node(state: GraphState) -> Dict[str, Any]:
-    operations = FunctionalRequirementsGroupOutput(**state["functional_requirements_operations"])
-    internal_management = FunctionalRequirementsGroupOutput(**state["functional_requirements_internal_management"])
-    client_experience = FunctionalRequirementsGroupOutput(**state["functional_requirements_client_experience"])
+    operations = FunctionalRequirementsGroupEnglishOutput(**state["functional_requirements_operations"])
+    internal_management = FunctionalRequirementsGroupEnglishOutput(**state["functional_requirements_internal_management"])
+    client_experience = FunctionalRequirementsGroupEnglishOutput(**state["functional_requirements_client_experience"])
 
     final_output = FunctionalRequirementsEnglishOutput(
         content=[operations, internal_management, client_experience]
