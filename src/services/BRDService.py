@@ -72,7 +72,7 @@ class BRDService:
         context = normalize_request(raw_request=payload)
         initial_state = {"context": context.to_dict()}
 
-        graph_result = brd_graph.invoke(initial_state) # type: ignore
+        graph_result = await brd_graph.ainvoke(initial_state) # type: ignore
 
         final_output = graph_result["final_response"]
 
