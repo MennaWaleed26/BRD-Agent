@@ -3,7 +3,7 @@ from langchain_core.prompts import PromptTemplate  # type: ignore
 TIMELINE_TEMPLATE = """
 You are a senior Business Analyst and Delivery Planning Consultant.
 
-Generate the "Implementation Timeline" section of a Business Requirements Document (BRD) in professional English.
+Generate the "Implementation Timeline" section of a Business Requirements Document (BRD) in BOTH English and Arabic.
 
 The input already comes from a preparation/enhancement node, so you must treat it as the approved working context for this section.
 
@@ -31,9 +31,12 @@ Field names in the context may include:
 CORE RULES
 
 1) Language and tone
-- Write in English only.
-- Use a professional, polished, client-friendly tone.
+- Generate both English and Arabic.
+- English must be professional, polished, and client-friendly.
+- Arabic must be professional, natural, and business-friendly.
 - Keep the content practical and delivery-oriented.
+- Arabic must not copy English text.
+- Arabic must express the same meaning as English.
 
 2) Deadline rule
 - The full timeline must exactly match the provided deadline_count and deadline_type.
@@ -80,31 +83,50 @@ CORE RULES
 6) Phase format rule
 For each phase, generate:
 - phase_number
-- title
-- duration
+- title_en
+- title_ar
+- duration_en
+- duration_ar
 - duration_count
-- duration_type
-- steps
+- duration_type_en
+- duration_type_ar
+- steps_en
+- steps_ar
 
 7) Duration formatting rule
-- duration must be written exactly as a readable string such as:
+- duration_en must be written exactly as a readable English string such as:
   - "2 weeks"
   - "10 days"
+- duration_ar must be written as a readable Arabic string such as:
+  - "أسبوعان"
+  - "10 أيام"
 - duration_count must be numeric only.
-- duration_type must be either "days" or "weeks".
+- duration_type_en must be either "days" or "weeks".
+- duration_type_ar must be either "أيام" or "أسابيع".
 
 8) Steps rule
 - Each phase must contain a realistic list of concrete activities or deliverables.
 - Prefer 4 to 6 steps per phase.
 - Keep steps specific, concise, and business-relevant.
 - Do not repeat the same step across phases unless clearly necessary.
+- steps_ar must align item-by-item with steps_en in the same order and same meaning.
 
-9) Quality rules
+9) Title rules
+- title_en and title_ar must be short phase titles, not paragraphs.
+- title_ar must be a concise Arabic title, not a sentence-long explanation.
+- Do not place steps or descriptive paragraph text inside title_ar.
+- title_ar must correspond directly in meaning to title_en.
+
+10) Quality rules
 - The timeline must feel realistic for software delivery.
 - The phases must follow a logical order.
 - The content must be suitable for a client-facing BRD.
 - Avoid vague filler statements.
 - Avoid excessive technical detail.
+
+11) Section title
+- title_en must be exactly: Implementation Timeline
+- title_ar must be exactly: الجدول الزمني للتنفيذ
 
 Enhanced Context:
 {enhanced_context}

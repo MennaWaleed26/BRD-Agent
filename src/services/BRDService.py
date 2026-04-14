@@ -74,7 +74,7 @@ class BRDService:
 
         graph_result = await brd_graph.ainvoke(initial_state) # type: ignore
 
-        final_output = graph_result["final_response"]
+        final_output = graph_result["final_result"]
 
         if hasattr(final_output, "model_dump"):
             final_output = final_output.model_dump()

@@ -1,8 +1,6 @@
-import json
-from sre_constants import ANY
-import stat
+
 from typing import Any, Dict, Type, TypeVar
-from urllib import response
+
 
 from langchain_openai import ChatOpenAI # type: ignore
 from pydantic import BaseModel # type: ignore
@@ -13,19 +11,13 @@ from src.schemas.preparation import PreparationOutput
 from src.schemas.sections_output import (
                                          
     
-    ProposedSystemEnglishOutput,
-    TechnologyStackEnglishOutput,
-    FunctionalRequirementsPlannerOutput,
-    FunctionalRequirementsGroupEnglishOutput,
-    FunctionalRequirementsEnglishOutput,
-    TimelineEnglishOutput,
-    BRDEnglishSections,
-    BRDArabicSections,
     ProposedSystemLocalizedOutput,
-    TechnologyStackLocalizedOutput,
-    FunctionalRequirementsLocalizedOutput,
     TimelineLocalizedOutput,
-    BRDResponsePayload
+    FunctionalRequirementsPlannerOutput,
+    FunctionalRequirementsGroupLocalizedOutput,
+    FunctionalRequirementsLocalizedOutput,
+    FinalBRDLocalizedOutput,
+    
 )
 from src.graph.prompts.proposed_system_prompt import proposed_system_prompt_template
 from src.graph.prompts.preparation_prompt import preparation_prompt_template
@@ -33,21 +25,13 @@ from src.graph.prompts.timeline_prompt import timeline_prompt_template
 from src.graph.prompts.technology_stack_prompt import technology_stack_prompt_template
 from src.graph.prompts.functional_req_planner_prompt import functional_requirements_planner_prompt_template
 from src.graph.prompts.functional_req_group_prompt import functional_requirements_group_prompt_template
-from src.graph.prompts.translation_report_prompt import translate_report_prompt_template
+
 from src.helpers.config import settings
-from langchain.agents import create_agent
-from langchain.agents.middleware import ModelFallbackMiddleware
 
 
 
 llm = ChatOpenAI(model="gpt-5.4-nano", api_key=settings.OPENAI_API_KEY) # type: ignore
-agent=create_agent(model=llm, middleware=[
-        ModelFallbackMiddleware(
-            "gpt-4.1-mini",
-            "claude-3-5-sonnet-20241022",
-        ),
-    ],
-)
+
 T = TypeVar("T",bound= BaseModel)
 
 
@@ -120,19 +104,19 @@ async def generate_functional_requirements_group(
     enhanced_context: Dict[str, Any],
     group_plan: Dict[str, Any],
     run_name:str ="Unknown"
-) -> FunctionalRequirementsGroupEnglishOutput:
+) -> FunctionalRequirementsGroupLocalizedOutput:
     """
     Generate functional requirements for a specific group
     using the shared structured invocation helper.
     """
 
-    response: FunctionalRequirementsGroupEnglishOutput = await invoke_structured_async(
+    response: FunctionalRequirementsGroupLocalizedOutput = await invoke_structured_async(
         prompt_template=functional_requirements_group_prompt_template,
         prompt_variables={
             "enhanced_context": enhanced_context,
             "group_plan": group_plan,
         },
-        output_model=FunctionalRequirementsGroupEnglishOutput,
+        output_model=FunctionalRequirementsGroupLocalizedOutput,
         run_name=run_name
     )
 
@@ -159,34 +143,34 @@ async def proposed_system_node(state:GraphState):
     response= await generate_english_section(
         state=state,
         prompt_template=proposed_system_prompt_template,
-        output_model=ProposedSystemEnglishOutput,
+        output_model=ProposedSystemLocalizedOutput,
         run_name="Proposed System Node"
         
     )
     
-    return {"proposed_system_en":response.model_dump()}
+    return {"proposed_system":response.model_dump()}
 
-async def technology_stack_node(state:GraphState):
-    response= await generate_english_section(
-        state=state,
-        prompt_template=technology_stack_prompt_template,
-        output_model=TechnologyStackEnglishOutput,
-        run_name="Technology Stach node"
-    )
+# async def technology_stack_node(state:GraphState):
+#     response= await generate_english_section(
+#         state=state,
+#         prompt_template=technology_stack_prompt_template,
+#         output_model=TechnologyStackEnglishOutput,
+#         run_name="Technology Stach node"
+#     )
     
-    return{"technology_stack_en":response.model_dump()}
+#     return{"technology_stack_en":response.model_dump()}
     
     
 async def timeline_node(state:GraphState):
     response= await generate_english_section(
         state=state,
         prompt_template=timeline_prompt_template,
-        output_model=TimelineEnglishOutput,
+        output_model=TimelineLocalizedOutput,
         run_name="Timeline Node"
         
     )
     
-    return {"timeline_en":response.model_dump()}
+    return {"timeline":response.model_dump()}
 
 async def functional_req_planner_node(state:GraphState):
     response= await generate_english_section(
@@ -197,6 +181,9 @@ async def functional_req_planner_node(state:GraphState):
 
     )
     return {"functional_requirements_plan":response.model_dump()}
+
+
+
 
 async def functional_requirements_operations_node(state:GraphState):
     enhanced_context = state["enhanced_context"]
@@ -238,60 +225,34 @@ async def functional_requirements_client_experience_node(state: GraphState) -> D
 
 
 async def functional_requirements_merge_node(state: GraphState) -> Dict[str, Any]:
-    operations = FunctionalRequirementsGroupEnglishOutput(**state["functional_requirements_operations"])
-    internal_management = FunctionalRequirementsGroupEnglishOutput(**state["functional_requirements_internal_management"])
-    client_experience = FunctionalRequirementsGroupEnglishOutput(**state["functional_requirements_client_experience"])
 
-    final_output = FunctionalRequirementsEnglishOutput(
-        content=[operations, internal_management, client_experience]
-    )
-    print("Success: functional_requirements_merge_node")
-    return {"functional_requirements_en": final_output.model_dump()}
+    keys=["functional_requirements_operations","functional_requirements_internal_management","functional_requirements_client_experience"]
 
-async def sections_merge_node(state: GraphState) -> Dict[str, Any]:
-    print("sections_merge_node keys:", state.keys())
+    groups=[]
 
-    english_report = BRDEnglishSections(
-        proposed_system=ProposedSystemEnglishOutput(**state["proposed_system_en"]),
-        technology_stack=TechnologyStackEnglishOutput(**state["technology_stack_en"]),
-        functional_requirements=FunctionalRequirementsEnglishOutput(**state["functional_requirements_en"]),
-        timeline=TimelineEnglishOutput(**state["timeline_en"]),
-    )
-    print("Success: sections_merge_node")
-    return {"english_report": english_report.model_dump()}
+    for key in keys:
+        group=state.get(key)
+        if group:
+            groups.append(FunctionalRequirementsGroupLocalizedOutput(**state[key]))
 
-async def translation_node(state:GraphState)-> Dict[str,Any]:
-    response= await invoke_structured_async(
-        prompt_template=translate_report_prompt_template,
-        prompt_variables={
-            "english_report":state["english_report"]
-        },
-        output_model=BRDArabicSections,
-        run_name="Translation Node"
-    )
-    return {"arabic_report": response.model_dump()}
+    result = FunctionalRequirementsLocalizedOutput(content=groups)
 
-async def final_response_node(state: GraphState) -> Dict[str, Any]:
-    english_report = BRDEnglishSections(**state["english_report"])
-    arabic_report = BRDArabicSections(**state["arabic_report"])
+    return {"functional_requirements": result.model_dump()}
 
-    final_response = BRDResponsePayload(
-        proposed_system=ProposedSystemLocalizedOutput(
-            en=english_report.proposed_system,
-            ar=arabic_report.proposed_system,
-        ),
-        technology_stack=TechnologyStackLocalizedOutput(
-            en=english_report.technology_stack,
-            ar=arabic_report.technology_stack,
-        ),
-        functional_requirements=FunctionalRequirementsLocalizedOutput(
-            en=english_report.functional_requirements,
-            ar=arabic_report.functional_requirements,
-        ),
-        timeline=TimelineLocalizedOutput(
-            en=english_report.timeline,
-            ar=arabic_report.timeline,
-        ),
-    )
 
-    return {"final_response": final_response.model_dump()}
+async def Final_BRD_node(state:GraphState):
+
+    keys=["proposed_system","timeline","functional_requirements"]
+
+    sections=[]
+
+    for key in keys:
+        v=state.get(key)
+        if v :
+            sections.append(v)
+    result = FinalBRDLocalizedOutput(sections=sections)
+
+    return {
+        "final_result": result.model_dump()
+    }
+

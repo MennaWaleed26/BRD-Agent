@@ -19,20 +19,16 @@ class PlatformTypeModel(BaseModel):
 class PlatformModel(BaseModel):
     key:Annotated[str,Field(description="The type of platform that the client want to build")]
     type:PlatformTypeModel
-    screens_count:int
     
 class TechStackModel(BaseModel):
     id:str
     title:str
     desc:str
-    
-class DurationTypeModel(BaseModel):
-    id:int
-    title:Literal["days","weeks"]
-    
+      
 class DeadlineModel(BaseModel):
-    count:int
-    type:DurationTypeModel  
+    min_stages:int
+    max_stages:int
+    timeline_details:str|None=None
     
 class ConstraintsModel(BaseModel):
     deadline:DeadlineModel

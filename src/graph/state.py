@@ -20,17 +20,15 @@ class GraphState(TypedDict):
 
     functional_requirements_plan: Dict[str, Any]
     # english generated sections
-    proposed_system_en: Dict[str, Any]
+    proposed_system: Dict[str, Any]
     technology_stack_en: Dict[str, Any]
-    timeline_en: Dict[str, Any]
+    timeline: Dict[str, Any]
+    
     
     functional_requirements_operations: Dict[str, Any]
     functional_requirements_internal_management: Dict[str, Any]
     functional_requirements_client_experience: Dict[str, Any]
-    functional_requirements_en: Dict[str, Any]
+    functional_requirements: Dict[str, Any]
 
 
-    english_report: Dict[str, Any]
-    arabic_report: Dict[str, Any]
-
-    final_response: Dict[str, Any]
+    final_result: Dict[str, Any]
