@@ -26,8 +26,7 @@ class TechStackModel(BaseModel):
     desc:str
       
 class DeadlineModel(BaseModel):
-    min_stages:int
-    max_stages:int
+    num_stages:int
     timeline_details:str|None=None
     
 class ConstraintsModel(BaseModel):

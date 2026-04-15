@@ -15,7 +15,6 @@ LANGUAGE OUTPUT REQUIREMENTS
 - English and Arabic must express the same meaning.
 - Arabic must be professional, natural, and business-friendly.
 - Do not transliterate English sentences into Arabic.
-- Keep technology names in English inside technologies_used.
 - Platform meaning must stay aligned across both languages.
 
 INSTRUCTIONS
@@ -28,118 +27,52 @@ INSTRUCTIONS
 
 2) Source of truth
 Use the enhanced context exactly as provided.
-Field names in the context may include:
-- project_name
-- project_idea
-- project_details
-- client_name
-- client_category
-- platforms
-- tech_stacks
-- is_agile
-- deadline_count
-- deadline_type
 
 3) Business context priority
-Use the context in this priority order:
-- Highest priority: project_details
+- Highest: project_details
 - Then: project_idea
 - Then: client_category and project_name
 
-If project_details is present, it must strongly shape the generated section.
-
 4) Platforms count rule
-- The number of generated components must follow the platforms list exactly when platforms are provided.
-- If platforms are provided and not empty:
-  - use ONLY those platforms as the system components
-  - do NOT add extra platforms
-  - do NOT remove provided platforms
-  - do NOT merge two provided platforms into one new platform
-  - do NOT split one provided platform into multiple components
-  - the number of generated components must exactly equal the number of provided platforms
-- If platforms are missing, null, or empty:
-  - infer the minimum appropriate set of platforms
-  - infer a minimum of 2 components
-  - infer a maximum of 5 components
+- Follow platforms list exactly if provided
+- Do not add/remove/merge/split platforms
+- If missing → infer 2–5 components
 
 5) Platform interpretation rule
-- If platforms are provided, keep each generated component aligned to its exact platform key.
-- Do not rename a platform into a broader concept that introduces unsupported channels or extra components.
-- You may convert each platform key into a professional business-friendly title only.
-
-Examples:
-- web_admin -> Admin Dashboard / لوحة التحكم الإدارية
-- customer_mobile -> Customer Mobile Application / تطبيق العميل للجوال
-- delivery_app -> Delivery Operations App / تطبيق عمليات التوصيل
-- backend_api -> Backend API / الواجهة البرمجية الخلفية
+- Keep alignment with provided platform keys
+- Convert only to business-friendly titles
 
 6) Platform naming rule
-- Use professional business-facing names in both languages.
-- You may include the client name in the title if it improves quality.
-- Keep the title aligned to the actual provided platform.
-- Do not add channels not present in the platform key.
+- Use professional business-facing names
+- No extra channels
 
-7) Technologies rule
-- Use only technologies from tech_stacks.
-- technologies_used must contain ONLY actual technologies.
-- Do NOT include platform keys such as web_admin, customer_mobile, or delivery_app inside technologies_used.
-- Choose only the most relevant 3 to 4 technologies for each component.
-- Do not overload each component with too many technologies.
-- Do not force all technologies into the section.
-- Prefer coherent and realistic matching.
-
-8) Content requirements
-Generate a list of the major system components.
-
+7) Content requirements
 Each component must include:
 - title_en
 - content_en
 - title_ar
 - content_ar
-- technologies_used
-ARABIC TITLE QUALITY RULES
-- title_ar must be a concise heading only.
-- title_ar must contain 3 to 8 words only.
-- title_ar must not be a sentence.
-- title_ar must not contain explanatory details.
-- title_ar must not repeat content_ar.
-- title_ar must correspond to the meaning of title_en.
 
-FIELD DIFFERENTIATION RULE
-- title_en and title_ar are headings.
-- content_en and content_ar are descriptive paragraphs.
-- Never place paragraph text into a title field.
+Each content:
+- 2–4 sentences
+- Describe:
+  - what it does
+  - who uses it
+  - business value
 
-EXAMPLE
-title_en: Delivery Operations App for Real-Time Tracking
-title_ar: تطبيق عمليات التوصيل والتتبع اللحظي
+8) Alignment rule
+- Arabic = exact meaning of English
 
+9) Integration rule
+- Components must work as one system
 
-Each content field must be 2 to 4 sentences describing:
-- what it does
-- who uses it
-- its business value
+10) Quality rules
+- No extra platforms
+- No unsupported assumptions
 
-9) Alignment rule
-- title_ar must correspond exactly in meaning to title_en
-- content_ar must correspond exactly in meaning to content_en
-- Keep the same business scope in both languages
-- Do not add details in one language that do not exist in the other
-
-10) Integration rule
-- The components must clearly work together as one integrated system.
-- Show complementarity across the components.
-- Avoid repetition across items.
-
-11) Quality rules
-- Do not invent unsupported requirements.
-- Do not add extra platforms beyond the provided ones.
-- Do not add web, portal, dashboard, backend, API, or admin components unless they are explicitly represented in the provided platforms.
-- Keep descriptions concrete, useful, and business-oriented.
-
-12) Section title
-- title_en should be: Proposed System
-- title_ar should be: النظام المقترح
+11) Section title
+- title_en: Proposed System
+- title_ar: النظام المقترح
 
 Enhanced Context:
 {enhanced_context}
@@ -147,7 +80,86 @@ Enhanced Context:
 Return output strictly according to the required structured schema.
 """
 
-proposed_system_prompt_template = PromptTemplate(
+
+PROPOSED_SYSTEM_ARABIC_TEMPLATE = """
+أنت محلل نظم وخبير حلول تقنية.
+
+قم بإنشاء قسم "النظام المقترح" ضمن وثيقة تحليل متطلبات الأعمال (BRD) باللغة العربية فقط.
+
+المدخلات تم تجهيزها مسبقًا، ويجب اعتبارها المصدر المعتمد لهذا القسم.
+
+الهدف
+وصف النظام المقترح كمجموعة من المكونات الرقمية المتكاملة التي تعمل معًا لتقديم حل متكامل للعميل.
+
+متطلبات اللغة
+- يجب أن يكون الناتج باللغة العربية فقط.
+- اللغة العربية يجب أن تكون احترافية، واضحة، ومناسبة للعميل.
+- تجنب الترجمة الحرفية أو الركيكة.
+
+التعليمات
+
+1) الأسلوب
+- أسلوب احترافي موجه للعميل
+- واضح ومباشر
+- تجنب المصطلحات التقنية المعقدة
+
+2) مصدر البيانات
+استخدم البيانات المعطاة كما هي بدون افتراضات إضافية.
+
+3) الأولوية
+- project_details أولًا
+- ثم project_idea
+- ثم client_category و project_name
+
+4) قواعد المنصات
+- إذا كانت platforms موجودة:
+  - استخدمها كما هي بدون زيادة أو حذف أو دمج
+- إذا لم تكن موجودة:
+  - استنتج من 2 إلى 5 مكونات فقط
+
+5) تسمية المكونات
+- استخدم أسماء احترافية مناسبة للأعمال
+- لا تضف قنوات غير موجودة
+
+6) محتوى كل مكون
+لكل مكون يجب توفير:
+- title_ar
+- content_ar
+
+قواعد العنوان:
+- من 3 إلى 8 كلمات
+- ليس جملة
+- لا يحتوي على شرح
+
+قواعد المحتوى:
+- من 2 إلى 4 جمل
+- يوضح:
+  - وظيفة المكون
+  - المستخدمين
+  - القيمة التجارية
+
+7) التكامل
+- يجب أن تعمل جميع المكونات كنظام واحد متكامل
+
+8) الجودة
+- لا تضف مكونات غير موجودة
+- لا تفترض متطلبات غير مذكورة
+
+9) عنوان القسم
+- النظام المقترح
+
+Enhanced Context:
+{enhanced_context}
+
+أعد النتيجة وفق الهيكل المطلوب فقط.
+"""
+
+proposed_system_bill_template = PromptTemplate(
     template=PROPOSED_SYSTEM_LOCALIZED_TEMPLATE,
+    input_variables=["enhanced_context"]
+)
+
+proposed_system_ar_template = PromptTemplate(
+    template=PROPOSED_SYSTEM_ARABIC_TEMPLATE,
     input_variables=["enhanced_context"]
 )

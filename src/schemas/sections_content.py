@@ -2,6 +2,9 @@ from pydantic import BaseModel, Field # type: ignore
 from typing import List, Annotated,Literal
 
 
+# =======================================================================
+#                                 BILLINGUAL
+# =======================================================================
 
 
 # =========================
@@ -21,10 +24,7 @@ class ProposedSystemItemLocalized(BaseModel):
     content_ar: str = Field(
         description="وصف عربي مهني من 2 إلى 4 جمل، ويعادل content_en في المعنى، وليس عنوانًا."
     )
-    technologies_used: List[str] = Field(
-        default_factory=list,
-        description="Actual technology names only, keep them in English."
-    )
+
 
 
 # =========================
@@ -43,13 +43,6 @@ class TimelinePhaseLocalizedItem(BaseModel):
         description="عنوان المرحلة باللغة العربية، عنوان قصير فقط، مثل: 'المرحلة 1 — التحليل والتصميم'"
     )
 
-    # Duration (formatted string)
-    duration_en: str = Field(
-        description="Phase duration in English exactly like '2 weeks' or '10 days'"
-    )
-    duration_ar: str = Field(
-        description="مدة المرحلة باللغة العربية مثل: 'أسبوعان' أو '10 أيام'"
-    )
 
     # Structured duration
     duration_count: int = Field(
@@ -71,6 +64,8 @@ class TimelinePhaseLocalizedItem(BaseModel):
         default_factory=list,
         description="قائمة بالأنشطة أو المخرجات الواقعية لهذه المرحلة باللغة العربية"
     )
+    
+    
 # =========================
 # Technology Stack
 # =========================
@@ -192,3 +187,95 @@ class FunctionalModuleDetailLocalized(BaseModel):
     features: List[FeatureDetailLocalized] = Field(default_factory=list)
 
 
+# =======================================================================
+#                                 ARABIC
+# =======================================================================
+
+
+# =========================
+# Proposed System
+# =========================
+
+class ProposedSystemItemArabic(BaseModel):
+
+    title_ar: str = Field(
+        description="عنوان عربي قصير فقط من 3 إلى 8 كلمات، وليس جملة طويلة، وليس فقرة"
+    )
+    content_ar: str = Field(
+        description="وصف عربي مهني من 2 إلى 4 جمل،"
+    )
+    
+    
+# =========================
+# Timeline
+# =========================
+
+class TimelinePhaseArabicItem(BaseModel):
+    phase_number: int = Field(
+        description="Sequential phase number starting from 1"
+    )
+
+    title_ar: str = Field(
+        description="عنوان المرحلة باللغة العربية، عنوان قصير فقط، مثل: 'المرحلة 1 — التحليل والتصميم'"
+    )
+
+
+    duration_count: int = Field(
+        description="Numeric duration of the phase"
+    )
+
+    duration_type_ar: Literal["أيام", "أسابيع"] = Field(
+        description="مدة المرحلة باللغة العربية"
+    )
+
+    steps_ar: List[str] = Field(
+        default_factory=list,
+        description="قائمة بالأنشطة أو المخرجات الواقعية لهذه المرحلة باللغة العربية"
+    )
+
+
+# =========================
+# Functional Requirements Details
+# =========================
+
+  
+class FeatureDetailArabic(BaseModel):
+
+    title_ar: str = Field(
+        description="عنوان عربي قصير للميزة، وليس فقرة"
+    )
+
+
+    description_ar: str = Field(
+        description="شرح مهني واضح للميزة باللغة العربية"
+    )
+
+ 
+    technical_implementation_ar: List[str] = Field(
+        default_factory=list,
+        description="خطوات تنفيذ واضحة بالعربية"
+    )
+
+
+    additional_ideas_ar: List[str] = Field(
+        default_factory=list,
+        description="أفكار إضافية اختيارية بالعربية تضيف قيمة مستقبلية"
+    )
+
+    technologies_used: List[str] = Field(
+        default_factory=list,
+        description="Actual technologies only, keep technology names in English, usually 1 to 4 items"
+    )
+
+
+class FunctionalModuleDetailArabic(BaseModel):
+
+    title_ar: str = Field(
+        description="عنوان الوحدة باللغة العربية، قصير وواضح"
+    )
+
+    intro_ar: str = Field(
+        description="مقدمة قصيرة للوحدة باللغة العربية، وتطابق intro_en في المعنى"
+    )
+
+    features: List[FeatureDetailArabic] = Field(default_factory=list)

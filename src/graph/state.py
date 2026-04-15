@@ -14,15 +14,17 @@ class GraphState(TypedDict):
     3. Combine into final bilingual response
     """
 
-    # normalized input from backend
+
     context: Dict[str, Any]
     enhanced_context: Dict[str, Any]
 
     functional_requirements_plan: Dict[str, Any]
-    # english generated sections
+  
     proposed_system: Dict[str, Any]
+ 
     technology_stack_en: Dict[str, Any]
     timeline: Dict[str, Any]
+   
     
     
     functional_requirements_operations: Dict[str, Any]

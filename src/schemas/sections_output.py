@@ -5,8 +5,15 @@ from src.schemas.sections_content import (
     ProposedSystemItemLocalized,
     TimelinePhaseLocalizedItem,
     FunctionalGroupPlanEnglish,
-    FunctionalModuleDetailLocalized
+    FunctionalModuleDetailLocalized,
+    ProposedSystemItemArabic,
+    TimelinePhaseArabicItem,
+    FunctionalModuleDetailArabic
 )
+
+# =======================================================================
+#                                 BILLINGUAL
+# =======================================================================
 
 
 class ProposedSystemLocalizedOutput(BaseModel):
@@ -64,22 +71,72 @@ class FunctionalRequirementsLocalizedOutput(BaseModel):
     )
 
 
-BRDSections=Union[
+BRDSectionsLocalized=Union[
     ProposedSystemLocalizedOutput,
     TimelineLocalizedOutput,
     FunctionalRequirementsLocalizedOutput
 ]
 class FinalBRDLocalizedOutput(BaseModel):
-    sections: List[BRDSections] = Field(default_factory=list) # type: ignore
+    sections: List[BRDSectionsLocalized] = Field(default_factory=list) # type: ignore
 
 
 
 
 
+# =======================================================================
+#                                 ARABIC
+# =======================================================================
 
 
+class ProposedSystemArabicOutput(BaseModel):
+    key: Literal["proposed_system"] = "proposed_system"
+
+    title_ar: str = Field(
+        default="النظام المقترح",
+        description="عنوان القسم باللغة العربية"
+    )
+
+    content: List[ProposedSystemItemArabic] = Field(
+        default_factory=list,
+        description="قائمة مكونات النظام المقترح باللغة العربية فقط"
+    )
 
 
+class TimelineArabicOutput(BaseModel):
+    key: Literal["timeline"] = "timeline"
+    title_ar: Literal["الجدول الزمني للتنفيذ"] = "الجدول الزمني للتنفيذ"
+    content: List[TimelinePhaseArabicItem] = Field(
+        default_factory=list,
+        description="قائمة مرتبة لمراحل التنفيذ بالعربية"
+    )
+
+class FunctionalRequirementsGroupArabicOutput(BaseModel):
+    group_key: str = Field(description="Stable internal group key")
 
 
+    group_title_ar: str = Field(
+        description="عنوان المجموعة باللغة العربية"
+    )
 
+
+    group_intro_ar: str = Field(
+        description="مقدمة قصيرة للمجموعة باللغة العربية"
+    )
+
+    modules: List[FunctionalModuleDetailArabic] = Field(default_factory=list)
+
+class FunctionalRequirementsArabicOutput(BaseModel):
+    key: Literal["functional_requirements"] = "functional_requirements"
+    title_ar: Literal["الوحدات الوظيفية التفصيلية"] = "الوحدات الوظيفية التفصيلية"
+
+    content: List[FunctionalRequirementsGroupArabicOutput] = Field(
+        default_factory=list
+    )
+
+BRDSectionsArabic=Union[
+    ProposedSystemArabicOutput,
+    TimelineArabicOutput,
+    FunctionalRequirementsArabicOutput
+]
+class FinalBRDArabicOutput(BaseModel):
+    sections: List[BRDSectionsArabic] = Field(default_factory=list) # type: ignore
