@@ -215,6 +215,18 @@ class ProposedSystemItemArabic(BaseModel):
 # =========================
 
 class TimelinePhaseArabicItem(BaseModel):
+
+    title_ar: str = Field(
+        description="عنوان المرحلة باللغة العربية، عنوان قصير فقط، مثل: 'المرحلة 1 — التحليل والتصميم'"
+    )
+
+    steps_ar: List[str] = Field(
+        default_factory=list,
+        description="قائمة بالأنشطة أو المخرجات الواقعية لهذه المرحلة باللغة العربية"
+    )
+
+    
+class TimelinePhaseEnrichedArabicItem(BaseModel):
     phase_number: int = Field(
         description="Sequential phase number starting from 1"
     )
@@ -225,7 +237,7 @@ class TimelinePhaseArabicItem(BaseModel):
 
 
     duration_count: int = Field(
-        description="Numeric duration of the phase"
+        description="Numeric duration of the stage"
     )
 
     duration_type_ar: Literal["أيام", "أسابيع"] = Field(

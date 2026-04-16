@@ -15,7 +15,7 @@ from src.schemas.sections_output import (
 from src.prompts.proposed_system_prompt import proposed_system_ar_template
 from src.prompts.timeline_prompt import timeline_arabic_prompt_template
 from src.prompts.functional_req_group_prompt import functional_requirements_group_ar_template
-
+from src.graph.validators.timeline_enricher import enrich_timeline_ar_stages
 
 
 
@@ -43,7 +43,10 @@ async def timeline_ar(state:GraphState):
         run_name="Timeline Arabic Node"
     )
     
-    return {"timeline":response.model_dump()}
+    enriched_timeline= enrich_timeline_ar_stages(state["context"], raw_timeline_output=response.model_dump())
+
+    
+    return {"timeline":enriched_timeline}
 
 async def functional_requirements_operations_ar(state:GraphState):
     enhanced_context = state["enhanced_context"]

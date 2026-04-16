@@ -8,6 +8,7 @@ from src.schemas.sections_content import (
     FunctionalModuleDetailLocalized,
     ProposedSystemItemArabic,
     TimelinePhaseArabicItem,
+    TimelinePhaseEnrichedArabicItem,
     FunctionalModuleDetailArabic
 )
 
@@ -110,6 +111,14 @@ class TimelineArabicOutput(BaseModel):
         description="قائمة مرتبة لمراحل التنفيذ بالعربية"
     )
 
+class TimelineEnrichedArabicOutput(BaseModel):
+    key: Literal["timeline"] = "timeline"
+    title_ar: Literal["الجدول الزمني للتنفيذ"] = "الجدول الزمني للتنفيذ"
+    content: List[TimelinePhaseEnrichedArabicItem] = Field(
+        default_factory=list,
+        description="قائمة مرتبة لمراحل التنفيذ بالعربية"
+    )
+    
 class FunctionalRequirementsGroupArabicOutput(BaseModel):
     group_key: str = Field(description="Stable internal group key")
 
@@ -135,7 +144,7 @@ class FunctionalRequirementsArabicOutput(BaseModel):
 
 BRDSectionsArabic=Union[
     ProposedSystemArabicOutput,
-    TimelineArabicOutput,
+    TimelineEnrichedArabicOutput,
     FunctionalRequirementsArabicOutput
 ]
 class FinalBRDArabicOutput(BaseModel):
