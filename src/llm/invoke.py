@@ -4,9 +4,6 @@ from pydantic import BaseModel # type: ignore
 
 from src.graph.state import GraphState
 
-from src.schemas.sections_output import FunctionalRequirementsGroupLocalizedOutput
-  
-from src.graph.prompts.functional_req_group_prompt import functional_requirements_group_prompt_template
 
 from src.helpers.config import settings
 
@@ -60,8 +57,9 @@ async def generate_enhanced_context(
     Shared helper for English generation nodes.
     """
     context=state["context"]
+    controls=state["controls"]
     result= await invoke_structured_async(prompt_template=prompt_template,
-                             prompt_variables={"context": context},
+                             prompt_variables={"context": context, "controls":controls},
                              output_model=output_model) 
     return result 
 

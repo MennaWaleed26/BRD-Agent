@@ -12,6 +12,7 @@ class ProjectContext:
         self.project_idea=raw_request.project.desc
         self.project_details=raw_request.project.details
         
+        
         self.client_name=raw_request.client.name
         self.client_category=raw_request.client.category
         
@@ -33,6 +34,8 @@ class ProjectContext:
             self.is_agile = val in ["true", "yes","1"]
             self.num_stages=c.deadline.num_stages
             self.timeline_details=c.deadline.timeline_details
+            self.total_price=c.total_price
+            self.days_per_stage=c.deadline.days_per_stage
             
     def to_dict(self)->Dict[str,Any]:
         return {
@@ -46,7 +49,9 @@ class ProjectContext:
             "tech_stacks": self.tech_stack,
             "is_agile": self.is_agile,
             "num_stages": self.num_stages,
-            "timeline_details": self.timeline_details
+            "timeline_details": self.timeline_details,
+            "total_price":self.total_price,
+            "days_per_stage":self.days_per_stage
             
         }
     def to_json_string(self):

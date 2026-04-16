@@ -65,6 +65,10 @@ class TimelinePhaseLocalizedItem(BaseModel):
         description="قائمة بالأنشطة أو المخرجات الواقعية لهذه المرحلة باللغة العربية"
     )
     
+    price:int =Field(
+        description="the total price devided the number of stages as all stages have the same price"
+    )
+    
     
 # =========================
 # Technology Stack
@@ -231,6 +235,9 @@ class TimelinePhaseArabicItem(BaseModel):
     steps_ar: List[str] = Field(
         default_factory=list,
         description="قائمة بالأنشطة أو المخرجات الواقعية لهذه المرحلة باللغة العربية"
+    )
+    price:int =Field(
+        description="سعر كل مرحلة"
     )
 
 

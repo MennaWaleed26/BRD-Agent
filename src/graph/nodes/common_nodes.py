@@ -1,8 +1,8 @@
-from src.helpers.invoke import generate_enhanced_context, generate_section
+from src.llm.invoke import generate_enhanced_context, generate_section
 from src.schemas.preparation import PreparationOutput
-from src.graph.prompts.preparation_prompt import preparation_prompt_template
+from src.prompts.preparation_prompt import preparation_prompt_template
 from src.graph.state import GraphState
-from src.graph.prompts.functional_req_planner_prompt import functional_requirements_planner_prompt_template
+from src.prompts.functional_req_planner_prompt import functional_requirements_planner_prompt_template
 from src.schemas.sections_output import FunctionalRequirementsPlannerOutput
 
 

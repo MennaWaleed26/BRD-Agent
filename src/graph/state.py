@@ -16,6 +16,7 @@ class GraphState(TypedDict):
 
 
     context: Dict[str, Any]
+    controls: Dict[str, Any]
     enhanced_context: Dict[str, Any]
 
     functional_requirements_plan: Dict[str, Any]

@@ -63,6 +63,20 @@ def create_brd_graph():
 
 
  
+    # workflow.add_edge(START, "preparation")
+    # workflow.add_conditional_edges("preparation",router_node,{
+    #     "arabic_branch":"arabic_entry_point",
+    #     "bilingual_branch":"bilingual_entry_point"
+    # })
+    
+    
+    # workflow.add_edge("bilingual_entry_point","timeline_bi")
+    # workflow.add_edge("arabic_entry_point","timeline_ar")
+    
+    # workflow.add_edge("timeline_bi",END)
+    # workflow.add_edge("timeline_ar",END)
+    
+    
     workflow.add_edge(START, "preparation")
     workflow.add_edge("preparation", "functional_req_planner")
     workflow.add_conditional_edges("functional_req_planner",router_node,{

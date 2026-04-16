@@ -12,9 +12,9 @@ from src.schemas.sections_output import (
     FinalBRDArabicOutput,
     
 )
-from src.graph.prompts.proposed_system_prompt import proposed_system_ar_template
-from src.graph.prompts.timeline_prompt import timeline_arabic_prompt_template
-from src.graph.prompts.functional_req_group_prompt import functional_requirements_group_ar_template
+from src.prompts.proposed_system_prompt import proposed_system_ar_template
+from src.prompts.timeline_prompt import timeline_arabic_prompt_template
+from src.prompts.functional_req_group_prompt import functional_requirements_group_ar_template
 
 
 

@@ -9,8 +9,8 @@ class PreparationOutput(BaseModel):
     platforms: List[str] = Field(default_factory=list)
     tech_stacks: List[str] = Field(default_factory=list)
     is_agile: Optional[bool] = None
-    deadline_count: Optional[int] = None
-    deadline_type: Optional[str] = None
+    num_stages: Optional[int] = None
+    timeline_details: Optional[str] = None
 
 
 # class PreparationOutput(BaseModel):

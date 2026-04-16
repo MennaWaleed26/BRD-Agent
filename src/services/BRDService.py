@@ -1,9 +1,11 @@
 from copy import deepcopy
 
+from click import prompt
+
 from src.schemas.request_models import BRDRequestModel  # type: ignore
 from src.services.NormalizeService import normalize_request
 from src.graph.workflow import brd_graph
-
+from ..domain import build_preparation_prompt_inputs
 
 class BRDService:
     def normalize_tech_title(self, title: str) -> str:
@@ -70,7 +72,11 @@ class BRDService:
         technology_lookup = self.build_technology_lookup(available_technologies)
 
         context = normalize_request(raw_request=payload)
-        initial_state = {"context": context.to_dict()}
+        prompt_inputs=build_preparation_prompt_inputs(context=context.to_dict())
+        controls=prompt_inputs["controls"]
+        context=prompt_inputs["context"]
+        
+        initial_state = {"context": context, "controls":controls}
 
         graph_result = await brd_graph.ainvoke(initial_state) # type: ignore
 
