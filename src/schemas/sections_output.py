@@ -4,6 +4,7 @@ from typing import Literal, Union, List
 from src.schemas.sections_content import (
     ProposedSystemItemLocalized,
     TimelinePhaseLocalizedItem,
+    TimelinePhaseEnrichedLocalizedItem,
     FunctionalGroupPlanEnglish,
     FunctionalModuleDetailLocalized,
     ProposedSystemItemArabic,
@@ -31,6 +32,14 @@ class TimelineLocalizedOutput(BaseModel):
     title_en: Literal["Implementation Timeline"] = "Implementation Timeline"
     title_ar: Literal["الجدول الزمني للتنفيذ"] = "الجدول الزمني للتنفيذ"
     content: List[TimelinePhaseLocalizedItem] = Field(
+        default_factory=list,
+        description="Ordered list of implementation phases in English and Arabic"
+    )
+class TimelineEnrichedLocalizedOutput(BaseModel):
+    key: Literal["timeline"] = "timeline"
+    title_en: Literal["Implementation Timeline"] = "Implementation Timeline"
+    title_ar: Literal["الجدول الزمني للتنفيذ"] = "الجدول الزمني للتنفيذ"
+    content: List[TimelinePhaseEnrichedLocalizedItem] = Field(
         default_factory=list,
         description="Ordered list of implementation phases in English and Arabic"
     )
@@ -74,7 +83,7 @@ class FunctionalRequirementsLocalizedOutput(BaseModel):
 
 BRDSectionsLocalized=Union[
     ProposedSystemLocalizedOutput,
-    TimelineLocalizedOutput,
+    TimelineEnrichedLocalizedOutput,
     FunctionalRequirementsLocalizedOutput
 ]
 class FinalBRDLocalizedOutput(BaseModel):

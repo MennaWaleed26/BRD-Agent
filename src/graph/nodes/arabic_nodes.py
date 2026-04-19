@@ -18,6 +18,8 @@ from src.prompts.functional_req_group_prompt import functional_requirements_grou
 from src.graph.validators.timeline_enricher import enrich_timeline_ar_stages
 
 
+class SectionValidationError(Exception):
+    pass
 
 base_node=BaseNodes()
 
@@ -48,6 +50,30 @@ async def timeline_ar(state:GraphState):
     
     return {"timeline":enriched_timeline}
 
+# async def validate_timeline_ar(state:GraphState):
+#     timeline=state.get("timeline")
+#     context=state["context"]
+#     try:
+#         expected_stages=context["num_stages"]
+#         actual_stages =len(timeline.get("content")) # type: ignore
+#         if actual_stages != expected_stages:
+#             raise SectionValidationError(
+#                 f"Expected {expected_stages} but got {actual_stages}"
+#             )
+#         return {
+#             "timeline_validated":timeline,
+#             "timeline_error": None 
+#         }
+        
+#     except Exception as e :
+        
+#         return {
+#             "timeline_validated":None,
+#             "timeline_error": str(e),
+#             "timeline_retry_count": state.get("timeline_retry_count",0)+1
+#         }
+    
+    
 async def functional_requirements_operations_ar(state:GraphState):
     enhanced_context = state["enhanced_context"]
     group_plan = state["functional_requirements_plan"] ["operations_and_project_lifecycle"]

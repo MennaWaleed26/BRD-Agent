@@ -25,7 +25,9 @@ class GraphState(TypedDict):
  
     technology_stack_en: Dict[str, Any]
     timeline: Dict[str, Any]
-   
+    # timeline_validated:Dict[str, Any]
+    # timeline_error:Optional[str]
+    # timeline_retry_count:int
     
     
     functional_requirements_operations: Dict[str, Any]
