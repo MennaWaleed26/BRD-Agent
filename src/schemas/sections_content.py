@@ -82,7 +82,7 @@ class TimelinePhaseEnrichedLocalizedItem(BaseModel):
         default_factory=list,
         description="قائمة بالأنشطة أو المخرجات الواقعية لهذه المرحلة باللغة العربية"
     )
-    price:int =Field(
+    price:float =Field(
         description="the total price devided the number of stages as all stages have the same price"
     )
     
@@ -265,7 +265,7 @@ class TimelinePhaseEnrichedArabicItem(BaseModel):
         default_factory=list,
         description="قائمة بالأنشطة أو المخرجات الواقعية لهذه المرحلة باللغة العربية"
     )
-    price:int =Field(
+    price:float =Field(
         description="سعر كل مرحلة"
     )
 

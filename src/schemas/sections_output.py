@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field # type: ignore
-from typing import Literal, Union, List
+from typing import Literal, Union, List,Annotated
 
 from src.schemas.sections_content import (
     ProposedSystemItemLocalized,
@@ -81,10 +81,13 @@ class FunctionalRequirementsLocalizedOutput(BaseModel):
     )
 
 
-BRDSectionsLocalized=Union[
-    ProposedSystemLocalizedOutput,
-    TimelineEnrichedLocalizedOutput,
-    FunctionalRequirementsLocalizedOutput
+BRDSectionsLocalized=Annotated[
+    Union[
+        ProposedSystemLocalizedOutput,
+        TimelineEnrichedLocalizedOutput,
+        FunctionalRequirementsLocalizedOutput
+    ],
+    Field(discriminator="key")
 ]
 class FinalBRDLocalizedOutput(BaseModel):
     sections: List[BRDSectionsLocalized] = Field(default_factory=list) # type: ignore
@@ -151,10 +154,11 @@ class FunctionalRequirementsArabicOutput(BaseModel):
         default_factory=list
     )
 
-BRDSectionsArabic=Union[
+BRDSectionsArabic=Annotated[
+    Union[
     ProposedSystemArabicOutput,
     TimelineEnrichedArabicOutput,
     FunctionalRequirementsArabicOutput
-]
+],  Field(discriminator="key")]
 class FinalBRDArabicOutput(BaseModel):
     sections: List[BRDSectionsArabic] = Field(default_factory=list) # type: ignore
