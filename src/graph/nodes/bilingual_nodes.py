@@ -18,6 +18,8 @@ from src.prompts.functional_req_group_prompt import functional_requirements_grou
 from ..validators.timeline_enricher import enrich_timeline_bi_stages
 
 
+class SectionValidationError(Exception):
+    pass
 
 base_node=BaseNodes()
 
@@ -25,6 +27,8 @@ base_node=BaseNodes()
 async def bilingual_entry_node(state: GraphState):
     return {}
 
+async def finish_timeline_bi_node(state: GraphState):
+    return {}
 
 async def proposed_system_billingual(state:GraphState):
     response= await base_node.proposed_system_node(state=state,
@@ -36,30 +40,75 @@ async def proposed_system_billingual(state:GraphState):
     return {"proposed_system":response.model_dump()}
 
 
-# async def technology_stack_node(state:GraphState):
-#     response= await generate_english_section(
-#         state=state,
-#         prompt_template=technology_stack_prompt_template,
-#         output_model=TechnologyStackEnglishOutput,
-#         run_name="Technology Stach node"
-#     )
-    
-#     return{"technology_stack_en":response.model_dump()}
-    
     
 async def timeline_billingual(state:GraphState):
     response= await base_node.timeline_node(
         state=state,
         prompt_template=timeline_prompt_template,
         output_model=TimelineLocalizedOutput,
-        run_name="Timeline Node"
+        run_name="Timeline Node",
+        is_timeline=True
     )
     enriched_timeline=enrich_timeline_bi_stages(context=state["context"],raw_timeline_output=response.model_dump())
     
     return {"timeline":enriched_timeline}
 
 
+async def validate_timeline_bi(state:GraphState):
+    timeline=state.get("timeline")
+    context=state.get("context")
+    try:
+        expected_stages= context.get("num_stages")
+        actual_stages= len(timeline.get("content",""))
+        
+        if expected_stages != actual_stages:
+            raise SectionValidationError(f"Expected {expected_stages} but got {actual_stages}")
+        return {
+            "timeline_validated":timeline,
+            "timeline_error":None
+            
+        }
+        
+    except Exception as e:
+        return {
+            "timeline_validated":None,
+            "timeline_error":f"failed to generate as Expected {expected_stages} stages but got {actual_stages}", # type: ignore
+            "timeline_retry_count": state.get("timeline_retry_count",0)+1
+        }     
 
+async def timeline_fallback_bi_node(state:GraphState):
+    context=state.get("context")
+    timeline=state.get("timeline") 
+    num_stages=context.get("num_stages")
+    days_per_stage=context.get("days_per_stage")
+    total_price=context.get("total_price",0)
+    stage_price = round(total_price / num_stages, 2)
+    
+    remaining_stages=len(timeline.get("content"))-num_stages # type: ignore
+    safe_content=[]
+    j=num_stages+1 # type: ignore
+    for _ in range(remaining_stages):
+        safe_content.append({
+            "phase_number": j,
+            "title_en": f"Phase {j}",
+            "title_ar": f"المرحلة {j}",
+            "duration_count": days_per_stage,
+            "duration_type_en": "days",
+            "duration_type_ar": "ايام",
+            "steps_en": ["Will be continued later. "],
+            "steps_ar": ["يُستكمل لاحقًا"],
+            "price":stage_price
+        })
+        j+=1
+    return {
+        "timeline_validated": {
+            "key": "timeline",
+            "title_en": "Implementation Timeline",
+            "title_ar": "الجدول الزمني للتنفيذ",
+            "content": timeline.get("content",[])+safe_content
+        },
+        "timeline_error": "Used fallback after 3 failed validation attempts.",
+    }
 
 
 async def functional_requirements_operations_billingual(state:GraphState):

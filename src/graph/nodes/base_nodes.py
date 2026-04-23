@@ -23,12 +23,13 @@ class BaseNodes:
         )
         return response
     
-    async def timeline_node(self,state:GraphState,prompt_template, output_model,run_name):
+    async def timeline_node(self,state:GraphState,prompt_template, output_model,run_name,is_timeline):
         response= await generate_section(
             state=state,
             prompt_template=prompt_template,
             output_model= output_model,
-            run_name= run_name
+            run_name= run_name,
+            is_timeline=is_timeline
 
         )
         

@@ -1,4 +1,6 @@
 from langchain_core.prompts import PromptTemplate  # type: ignore
+
+
 FUNCTIONAL_REQUIREMENTS_GROUP_TEMPLATE = """
 You are a senior Business Analyst and Solution Architect.
 
@@ -76,7 +78,6 @@ For each feature, generate:
 - technical_implementation_ar
 - additional_ideas_en
 - additional_ideas_ar
-- technologies_used
 
 DESCRIPTION RULE
 - Explain what the feature does AND why it matters.
@@ -94,9 +95,6 @@ ADDITIONAL IDEAS RULE
 - Provide 0 to 3 meaningful enhancements.
 - Only include ideas that realistically add value.
 
-TECHNOLOGY RELEVANCE RULE
-- Use only technologies from enhanced_context.tech_stacks when relevant.
-- Keep technologies minimal and meaningful (1–3 preferred).
 
 EXPLANATION BALANCE RULE
 - Avoid being too generic.
@@ -194,7 +192,6 @@ FUNCTIONAL_REQUIREMENTS_GROUP_AR_TEMPLATE = """
 - description_ar
 - technical_implementation_ar
 - additional_ideas_ar
-- technologies_used
 
 قاعدة الوصف
 - اشرح ما الذي تقوم به الخاصية ولماذا هي مهمة.
@@ -210,10 +207,6 @@ FUNCTIONAL_REQUIREMENTS_GROUP_AR_TEMPLATE = """
 - قدم من 0 إلى 3 أفكار فقط.
 - يجب أن تضيف قيمة حقيقية للنظام.
 
-قاعدة التقنيات
-- استخدم التقنيات فقط عند الحاجة.
-- لا تكثر من ذكر التقنيات.
-- اكتب أسماء التقنيات باللغة الإنجليزية.
 
 قاعدة التوازن
 - لا تجعل الوصف عامًا جدًا.

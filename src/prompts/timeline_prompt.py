@@ -7,20 +7,23 @@ Generate the "Implementation Timeline" section of a Business Requirements Docume
 
 The input has already been prepared and enhanced, and it must be treated as the approved source of truth for this section.
 
+----------------------------------
 OBJECTIVE
+----------------------------------
 Create a realistic implementation timeline aligned with:
 - the project scope
 - the specified platforms
 - the delivery approach
 - the required number of stages
-- the fixed duration of each stage
 - any provided timeline guidance
 
+----------------------------------
 SOURCE OF TRUTH
+----------------------------------
 Use the provided enhanced context exactly as given.
 Do not introduce unsupported assumptions.
 
-You may receive fields such as:
+You may receive:
 - project_title
 - project_desc
 - project_details
@@ -32,114 +35,166 @@ You may receive fields such as:
 - timeline_details
 - is_agile
 - total_price
+- timeline_error
 
+----------------------------------
+ERROR CORRECTION RULE (NEW – MATCH ARABIC)
+----------------------------------
+- If timeline_error exists and is not empty:
+  - it represents a validation failure from a previous attempt
+  - you MUST treat it as a mandatory correction note
+  - you MUST regenerate the entire timeline after fixing the issue
+  - you MUST NOT repeat the same error
+  - error correction must be fully applied without breaking other rules
+
+----------------------------------
 LANGUAGE AND STYLE
-- Generate both English and Arabic.
-- English must be professional, polished, and client-friendly.
-- Arabic must be professional, natural, and business-friendly.
-- Arabic must match the English meaning closely.
-- Keep the content practical and delivery-oriented.
-- Avoid excessive technical detail.
+----------------------------------
+- Generate both English and Arabic
+- English must be professional and client-friendly
+- Arabic must be natural, professional, and business-oriented
+- Arabic must match the English meaning closely
+- Avoid excessive technical detail
+- Keep content practical and delivery-oriented
 
+----------------------------------
 MANDATORY STRUCTURAL RULES
+----------------------------------
 
 1) Exact stage count rule
-- You MUST generate exactly the same number of stages as num_stages.
-- Do not generate fewer stages.
-- Do not generate more stages.
-- Stage numbering must start from 1 and continue sequentially.
+- You MUST generate exactly num_stages
+- Do NOT generate fewer or more
+- Numbering must start from 1 and be sequential
 
+----------------------------------
 
-5) Timeline details priority rule
-- If timeline_details is provided and meaningful, give it high priority when determining:
-  - stage focus
-  - stage titles
-  - sequence of activities
-  - major deliverables
-- Use timeline_details as a primary planning guide.
-- However, timeline_details must not break:
-  - the exact stage count rule
-  - the exact stage duration rule
-  - the exact stage pricing rule
-- If timeline_details is missing, create a realistic timeline from the project context.
+2) Timeline details priority rule
+- If timeline_details is provided:
+  - use it as primary guidance for:
+    - stage focus
+    - stage titles
+    - sequence of activities
+- It must NOT break:
+  - stage count rule
 
-6) Scope alignment rule
-- The timeline must reflect the real project scope.
-- If platforms are provided, the stages should realistically cover delivery of those platforms.
-- If project_details is provided, it must strongly influence the listed activities.
-- Do not invent unsupported scope.
+----------------------------------
 
+3) Scope alignment rule
+- Timeline must reflect actual project scope
+- If platforms exist:
+  - stages must realistically cover platform delivery
+- If project_details exist:
+  - they must strongly influence activities
+- Do NOT invent scope
+
+----------------------------------
 AGILE DELIVERY RULES
+----------------------------------
 
-7) Mandatory agile composition rule
-- If is_agile is true:
-  - every stage must represent an iterative delivery cycle
-  - do NOT create separate stages dedicated only to analysis, only to design, only to implementation, or only to testing
-  - instead, each stage must clearly and explicitly include these four work types:
-    1. an analysis or refinement step
-    2. a design or planning step
-    3. an implementation or development step
-    4. a testing, validation, or review step
-  - these four work types must appear clearly in both steps_en and steps_ar for every stage, not merely implied
-  - a fifth or sixth step may be added when useful, but the four types above are mandatory in every agile stage
+4) Mandatory agile composition rule
+If is_agile = true:
+- each stage MUST include ALL:
+  1. analysis/refinement
+  2. design/planning
+  3. implementation/development
+  4. testing/review
 
-- If is_agile is false:
-  - stages may be structured in a more traditional way
-  - the emphasis of each stage may vary according to project needs
-  - but the exact stage count, exact stage duration, and exact stage pricing rules remain mandatory
+- These must appear clearly in BOTH:
+  - steps_en
+  - steps_ar
 
-8) Stage progression rule
-- Stages must follow a logical sequence.
-- Each stage should build on the previous one.
-- Early stages should lean more toward discovery, planning, and foundation work.
-- Middle stages should lean more toward core implementation and integration.
-- Final stages should lean more toward validation, deployment readiness, launch, stabilization, training, or handover as appropriate.
-- If is_agile is true, this progression should appear without isolating activities into single-purpose stages.
+- You may add extra steps, but these four are mandatory
 
+If is_agile = false:
+- stages may vary in focus
+- but must still respect structure rules
+
+----------------------------------
+
+5) Stage progression rule
+- Stages must follow a logical flow
+- Each stage builds on previous
+
+- Early stages → discovery, planning
+- Middle stages → implementation, integration
+- Final stages → validation, readiness, launch, stabilization
+
+- In Agile, this progression must appear WITHOUT isolating work types
+
+----------------------------------
 STAGE FORMAT RULES
+----------------------------------
 
-9) For each stage, generate:
-
+6) For each stage generate:
 - title_en
 - title_ar
 - steps_en
 - steps_ar
 
+----------------------------------
 
-10) Title rules
-- title_en and title_ar must be short stage titles, not paragraphs.
-- They must directly represent the main delivery focus of the stage.
-- Avoid overly generic titles such as "Stage 1 Work" unless clearly necessary.
+7) Title rules
+- Titles must be short
+- Must reflect stage focus clearly
+- Avoid generic titles
 
-11) Steps rules
-- Each stage must contain 4 to 6 steps.
-- Steps must be concrete, concise, clear, and business-relevant.
-- steps_ar must align item-by-item with steps_en in the same order and same meaning.
-- If is_agile is true, each stage must clearly include:
-  - analysis or refinement
-  - design or planning
-  - implementation or development
-  - testing, review, or validation
-- Do not repeat the exact same step list across all stages.
-- Make each stage reflect its own delivery objective.
+----------------------------------
 
-12) Mandatory validation before output
-Before producing the final result, internally verify all of the following:
-- number of stages = num_stages exactly
-- if is_agile is true, every stage clearly contains analysis + design + implementation + testing
+8) Steps rules
+- Each stage must have 4–6 steps
+- Steps must be:
+  - clear
+  - concise
+  - business-relevant
 
-13) Quality rules
-- The timeline must feel realistic for software delivery.
-- The stages must be suitable for a client-facing BRD.
-- Avoid vague filler statements.
-- Avoid unsupported assumptions.
+- steps_ar must match steps_en line-by-line
 
-14) Section title rule
-- title_en must be exactly: Implementation Timeline
-- title_ar must be exactly: الجدول الزمني للتنفيذ
+- If Agile:
+  each stage MUST include:
+  - analysis
+  - design
+  - implementation
+  - testing
+
+- Do NOT repeat identical steps across stages
+
+----------------------------------
+
+9) Mandatory validation before output
+Before generating final result:
+- verify stage count = num_stages
+- if is_agile = true:
+  every stage includes:
+    analysis + design + implementation + testing
+
+- if timeline_error exists:
+  ensure it is fully resolved
+
+----------------------------------
+
+10) Quality rules
+- Timeline must be realistic
+- Suitable for client-facing BRD
+- Avoid vague or filler content
+- Avoid unsupported assumptions
+
+----------------------------------
+
+11) Section title
+- title_en: Implementation Timeline
+- title_ar: الجدول الزمني للتنفيذ
+
+----------------------------------
 
 Enhanced Context:
 {enhanced_context}
+
+----------------------------------
+
+Validation Error From Previous Attempt:
+{timeline_error}
+
+----------------------------------
 
 Return output strictly according to the required structured schema.
 """
@@ -165,7 +220,6 @@ TIMELINE_ARABIC_TEMPLATE = """
 - المنصات المحددة
 - أسلوب التنفيذ
 - عدد المراحل المطلوب
-- مدة كل مرحلة المحددة
 - أي توجيهات زمنية مقدمة
 
 مصدر البيانات
@@ -183,6 +237,14 @@ TIMELINE_ARABIC_TEMPLATE = """
 - timeline_details
 - is_agile
 - total_price
+- timeline_error
+
+تعليمات تصحيح الإخراج السابق
+- إذا كانت timeline_error موجودة وغير فارغة، فهذا يعني أن المحاولة السابقة فشلت في التحقق.
+- في هذه الحالة، اعتبر timeline_error ملاحظة تصحيح إلزامية يجب معالجتها بالكامل في هذه المحاولة.
+- أعد إنشاء القسم بالكامل بعد تصحيح الخطأ المذكور.
+- لا تكرر نفس الخطأ السابق.
+- يجب أن يكون تصحيح الخطأ جزءًا أساسيًا من هذه المحاولة دون الإخلال بباقي القواعد.
 
 اللغة والأسلوب
 - يجب أن يكون الناتج باللغة العربية فقط.
@@ -197,22 +259,19 @@ TIMELINE_ARABIC_TEMPLATE = """
 - يجب إنشاء عدد مراحل يساوي تمامًا القيمة الموجودة في num_stages.
 - لا يجوز إنشاء عدد أقل من المراحل.
 - لا يجوز إنشاء عدد أكبر من المراحل.
-- يبدأ ترقيم المراحل من 1 بشكل متسلسل.
+- يبدأ ترتيب المراحل من 1 بشكل متسلسل.
 
-
-
-
-5) أولوية timeline_details
+2) أولوية timeline_details
 - إذا كانت timeline_details موجودة وواضحة، فامنحها أولوية عالية عند تحديد:
   - تركيز كل مرحلة
   - عناوين المراحل
   - تسلسل الأنشطة
   - المخرجات الرئيسية
 - استخدم timeline_details كمرجع تخطيطي رئيسي.
-- لكن لا يجوز أن تؤدي إلى كسر عدد المراحل المحدد أو مدة كل مرحلة المحددة أو سعر كل مرحلة المحدد.
 - إذا لم تكن موجودة، فأنشئ جدولًا زمنيًا واقعيًا من سياق المشروع.
+- لا يجوز أن تؤدي timeline_details إلى كسر عدد المراحل المطلوب.
 
-6) توافق النطاق
+3) توافق النطاق
 - يجب أن يعكس الجدول الزمني نطاق المشروع الحقيقي.
 - إذا كانت platforms موجودة، فيجب أن تغطي المراحل تنفيذ هذه المنصات بشكل واقعي.
 - إذا كانت project_details موجودة، فيجب أن تؤثر بشكل أساسي على الأنشطة المدرجة.
@@ -220,7 +279,7 @@ TIMELINE_ARABIC_TEMPLATE = """
 
 قواعد التنفيذ بأسلوب Agile
 
-7) قاعدة التكوين الإجباري لكل مرحلة في Agile
+4) قاعدة التكوين الإجباري لكل مرحلة في Agile
 - إذا كانت is_agile = true:
   - يجب أن تمثل كل مرحلة دورة تنفيذ تكرارية.
   - لا تنشئ مراحل منفصلة مخصصة فقط للتحليل أو فقط للتصميم أو فقط للتنفيذ أو فقط للاختبار.
@@ -235,9 +294,9 @@ TIMELINE_ARABIC_TEMPLATE = """
 - إذا كانت is_agile = false:
   - يمكن تنظيم المراحل بطريقة أكثر تقليدية
   - يمكن أن يختلف تركيز كل مرحلة حسب احتياجات المشروع
-  - لكن مع الالتزام التام بعدد المراحل ومدة كل مرحلة وسعر كل مرحلة
+  - لكن مع الالتزام التام بعدد المراحل المطلوب
 
-8) قاعدة تسلسل المراحل
+5) قاعدة تسلسل المراحل
 - يجب أن تكون المراحل مرتبة منطقيًا.
 - كل مرحلة يجب أن تبني على المرحلة السابقة.
 - المراحل الأولى يجب أن تميل أكثر إلى الاستكشاف والتخطيط وبناء الأساس.
@@ -247,17 +306,16 @@ TIMELINE_ARABIC_TEMPLATE = """
 
 قواعد هيكل المرحلة
 
-9) لكل مرحلة يجب إنشاء:
+6) لكل مرحلة يجب إنشاء:
 - title_ar
 - steps_ar
 
-
-10) قواعد العناوين
+7) قواعد العناوين
 - يجب أن يكون title_ar عنوانًا قصيرًا للمرحلة وليس فقرة.
 - يجب أن يعبر مباشرة عن التركيز الرئيسي للمرحلة.
 - لا تستخدم عناوين عامة جدًا مثل "أعمال المرحلة الأولى" إلا عند الضرورة الواضحة.
 
-11) قواعد الخطوات
+8) قواعد الخطوات
 - كل مرحلة يجب أن تحتوي على 4 إلى 6 خطوات.
 - يجب أن تكون الخطوات واضحة ومحددة ومختصرة ومرتبطة بالأعمال الفعلية.
 - إذا كان is_agile = true، فيجب أن تتضمن الخطوات بوضوح:
@@ -268,26 +326,31 @@ TIMELINE_ARABIC_TEMPLATE = """
 - لا تكرر نفس قائمة الخطوات حرفيًا في جميع المراحل.
 - اجعل كل مرحلة مرتبطة بهدفها التنفيذي المحدد.
 
-12) فحص إلزامي قبل الإخراج
+9) فحص إلزامي قبل الإخراج
 قبل إخراج النتيجة النهائية، تحقق داخليًا من الآتي:
 - عدد المراحل = num_stages تمامًا
 - إذا كان is_agile = true، فكل مرحلة تحتوي بوضوح على تحليل + تصميم + تنفيذ + اختبار
+- إذا كانت timeline_error موجودة، فقد تم تصحيحها بالكامل في هذه المحاولة
 
-13) الجودة
+10) الجودة
 - يجب أن يبدو الجدول الزمني واقعيًا بالنسبة لتسليم مشروع برمجي.
 - يجب أن تكون المراحل مناسبة لوثيقة موجهة للعميل.
 - تجنب العبارات العامة غير المفيدة.
 - تجنب الافتراضات غير المدعومة.
 
-14) عنوان القسم
+11) عنوان القسم
 - الجدول الزمني للتنفيذ
 
 Enhanced Context:
 {enhanced_context}
 
+Validation Error From Previous Attempt:
+{timeline_error}
+
 أعد النتيجة وفق الهيكل المطلوب فقط.
 """
+
 timeline_arabic_prompt_template = PromptTemplate(
     template=TIMELINE_ARABIC_TEMPLATE,
-    input_variables=["enhanced_context"]
+    input_variables=["enhanced_context","timeline_error"]
 )

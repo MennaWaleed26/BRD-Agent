@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field # type: ignore
-from typing import List, Annotated,Literal
+from typing import List, Literal
 
 
 # =======================================================================
@@ -10,6 +10,7 @@ from typing import List, Annotated,Literal
 # =========================
 # Proposed System
 # =========================
+
 
 class ProposedSystemItemLocalized(BaseModel):
     title_en: str = Field(
@@ -87,35 +88,6 @@ class TimelinePhaseEnrichedLocalizedItem(BaseModel):
     )
     
     
-# =========================
-# Technology Stack
-# =========================
-
-   
-class TechnologyStackContentEnglish(BaseModel):
-    title: str = Field(
-        description="Business-friendly subsection title aligned to a platform or major solution area"
-    )
-    content: str = Field(
-        description="A concise professional paragraph describing why the selected technologies are suitable and what business or operational advantages they provide"
-    )
-    technologies_used: List[str] = Field(
-        default_factory=list,
-        description="List of actual technologies only, minimum 1 and maximum 4 items"
-    )
-    
-class TechnologyStackContentArabic(BaseModel):
-    title: str = Field(
-        description="عنوان فرعي مهني باللغة العربية مرتبط بمنصة أو مجال حل رئيسي"
-    )
-    content: str = Field(
-        description="فقرة عربية مهنية ومختصرة توضح سبب ملاءمة التقنيات المختارة وما المزايا التشغيلية أو التجارية التي تقدمها"
-    )
-    technologies_used: List[str] = Field(
-        default_factory=list,
-        description="أسماء التقنيات الفعلية فقط، وتبقى بالإنجليزية عند الحاجة"
-    )
-
 
 
 
@@ -182,11 +154,6 @@ class FeatureDetailLocalized(BaseModel):
     additional_ideas_ar: List[str] = Field(
         default_factory=list,
         description="أفكار إضافية اختيارية بالعربية تضيف قيمة مستقبلية، وتطابق المعنى الإنجليزي"
-    )
-
-    technologies_used: List[str] = Field(
-        default_factory=list,
-        description="Actual technologies only, keep technology names in English, usually 1 to 4 items"
     )
 
 
@@ -298,10 +265,6 @@ class FeatureDetailArabic(BaseModel):
         description="أفكار إضافية اختيارية بالعربية تضيف قيمة مستقبلية"
     )
 
-    technologies_used: List[str] = Field(
-        default_factory=list,
-        description="Actual technologies only, keep technology names in English, usually 1 to 4 items"
-    )
 
 
 class FunctionalModuleDetailArabic(BaseModel):

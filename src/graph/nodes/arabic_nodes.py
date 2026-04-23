@@ -1,5 +1,5 @@
 
-from typing import Any, Dict
+from typing import Any, Dict,Literal
 from src.graph.state import GraphState
 from src.graph.nodes.base_nodes import BaseNodes
 from src.schemas.sections_output import (
@@ -26,6 +26,9 @@ base_node=BaseNodes()
 async def arabic_entry_node(state: GraphState):
     return {}
 
+async def finish_timeline_ar_node(state: GraphState):
+    return {}
+
 
 
 async def proposed_system_ar(state:GraphState):
@@ -38,40 +41,74 @@ async def proposed_system_ar(state:GraphState):
     return {"proposed_system":response.model_dump()}
 
 async def timeline_ar(state:GraphState):
+    
     response= await base_node.timeline_node(
         state=state,
         prompt_template=timeline_arabic_prompt_template,
         output_model=TimelineArabicOutput,
-        run_name="Timeline Arabic Node"
+        run_name="Timeline Arabic Node",
+        is_timeline=True
     )
+    
+    
     
     enriched_timeline= enrich_timeline_ar_stages(state["context"], raw_timeline_output=response.model_dump())
 
     
     return {"timeline":enriched_timeline}
 
-# async def validate_timeline_ar(state:GraphState):
-#     timeline=state.get("timeline")
-#     context=state["context"]
-#     try:
-#         expected_stages=context["num_stages"]
-#         actual_stages =len(timeline.get("content")) # type: ignore
-#         if actual_stages != expected_stages:
-#             raise SectionValidationError(
-#                 f"Expected {expected_stages} but got {actual_stages}"
-#             )
-#         return {
-#             "timeline_validated":timeline,
-#             "timeline_error": None 
-#         }
+async def validate_timeline_ar(state:GraphState):
+    timeline=state.get("timeline")
+    context=state["context"]
+    try:
+        expected_stages=context["num_stages"]
+        actual_stages =len(timeline.get("content")) # type: ignore
+        if actual_stages != expected_stages:
+            raise SectionValidationError(
+                f"Expected {expected_stages} but got {actual_stages}"
+            )
+        return {
+            "timeline_validated":timeline,
+            "timeline_error": None 
+        }
         
-#     except Exception as e :
+    except Exception as e :
         
-#         return {
-#             "timeline_validated":None,
-#             "timeline_error": str(e),
-#             "timeline_retry_count": state.get("timeline_retry_count",0)+1
-#         }
+        return {
+            "timeline_validated":None,
+            "timeline_error": f"فشلت المحاولة السابقة لانه كان مطلوب {expected_stages} بينما تم توليد {actual_stages}", # type: ignore
+            "timeline_retry_count": state.get("timeline_retry_count",0)+1
+        }
+   
+async def timeline_fallback_ar_node(state:GraphState):
+    context=state.get("context")
+    timeline=state.get("timeline") 
+    num_stages=context.get("num_stages")
+    days_per_stage=context.get("days_per_stage")
+    total_price=context.get("total_price",0)
+    stage_price = round(total_price / num_stages, 2)
+    
+    remaining_stages=len(timeline.get("content"))-num_stages # type: ignore
+    safe_content=[]
+    j=num_stages+1 # type: ignore
+    for _ in range(remaining_stages):
+        safe_content.append({
+            "phase_number": j,
+            "title_ar": f"المرحلة {j}",
+            "duration_count": days_per_stage,
+            "duration_type_ar": "ايام",
+            "steps_ar": ["يُستكمل لاحقًا"],
+            "price":stage_price
+        })
+        j+=1
+    return {
+        "timeline_validated": {
+            "key": "timeline",
+            "title_ar": "الجدول الزمني للتنفيذ",
+            "content": timeline.get("content",[])+safe_content
+        },
+        "timeline_error": "Used fallback after 3 failed validation attempts.",
+    }
     
     
 async def functional_requirements_operations_ar(state:GraphState):
@@ -139,7 +176,7 @@ async def functional_requirements_merge_ar(state: GraphState) -> Dict[str, Any]:
 
 async def Final_BRD_ar(state:GraphState):
 
-    keys=["proposed_system","timeline","functional_requirements"]
+    keys=["proposed_system","timeline_validated","functional_requirements"]
 
     result= await base_node.Final_BRD_node(state=state,output_schema=FinalBRDArabicOutput,keys=keys)
 

@@ -26,14 +26,14 @@ class TechStackModel(BaseModel):
     desc:str
       
 class DeadlineModel(BaseModel):
-    num_stages:int
-    days_per_stage:int=20
+    num_stages:Annotated[int,Field(gt=0)]
+    days_per_stage:Annotated[int,Field(gt=0)]=20
     timeline_details:str|None=None
     
 class ConstraintsModel(BaseModel):
     deadline:DeadlineModel
     is_agile:bool
-    total_price:int
+    total_price:Annotated[int,Field(gt=0)]
     
 class BRDRequestModel(BaseModel):
     language_targets:Annotated[List[str],Field(description="the difference languages that the project should support")]
