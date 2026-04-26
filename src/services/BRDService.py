@@ -1,7 +1,4 @@
 from copy import deepcopy
-
-from click import prompt
-
 from src.schemas.request_models import BRDRequestModel  # type: ignore
 from src.services.NormalizeService import normalize_request
 from src.graph.workflow import brd_graph

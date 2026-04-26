@@ -1,6 +1,8 @@
 
 from pydantic import BaseModel, Field
 from typing import List,Annotated,Any,Dict,Literal
+from .preparation import PreparationOutput
+from .sections_output import ProposedSystemArabicOutput,TimelineArabicOutput
 
 class ClientModel(BaseModel):
     name:Annotated[str,Field(description="The name of the client company ")]
@@ -42,3 +44,18 @@ class BRDRequestModel(BaseModel):
     platforms:Annotated[List[PlatformModel]|None,Field(description="the platforms that the client asked to have")]=None
     tech_stack_ids:List[TechStackModel]
     constraints:ConstraintsModel
+
+
+
+
+
+class PlatformRequestModel(BaseModel):
+    enhanced_context: PreparationOutput
+    original_content: ProposedSystemArabicOutput
+    edit_content: str
+
+
+class TimelineRequestModel(BaseModel):
+    enhanced_context:PreparationOutput
+    original_content: TimelineArabicOutput
+    edit_content: str
