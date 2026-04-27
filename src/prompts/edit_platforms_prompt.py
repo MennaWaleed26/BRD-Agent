@@ -39,6 +39,9 @@ Use Mode B when the edit affects:
 
 IMPORTANT CLASSIFICATION RULE:
 If the edit adds, removes, or changes a platform, role, or platform-role relationship, classify it as MODE B even if the user only mentions the Proposed System section.
+MIXED EDIT RULE:
+If the edit contains both content refinement and structural changes, classify as Mode B.
+Structural changes take priority over wording-only changes.
 
 AFFECTED ENTITIES RULE:
 For Mode A, affected_entities usually includes:

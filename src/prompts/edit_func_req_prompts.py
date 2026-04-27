@@ -28,6 +28,10 @@ Use Mode B when the edit affects:
 - adding a new functional capability
 - changing scope, roles, platforms, or user journeys
 
+MIXED EDIT RULE:
+If the edit contains both content refinement and structural changes, classify as Mode B.
+Structural changes take priority over wording-only changes.
+
 IMPORTANT:
 If the edit changes platforms, roles, platform_role_map, or project scope, still classify as Mode B.
 In this case, affected_entities should include proposed_system and timeline as possibly impacted.
