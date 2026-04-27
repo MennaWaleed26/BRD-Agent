@@ -2,7 +2,7 @@
 from pydantic import BaseModel, Field
 from typing import List,Annotated,Any,Dict,Literal
 from .preparation import PreparationOutput
-from .sections_output import ProposedSystemArabicOutput,TimelineArabicOutput
+from .sections_output import ProposedSystemArabicOutput,TimelineEnrichedArabicOutput,FunctionalRequirementsArabicOutput
 
 class ClientModel(BaseModel):
     name:Annotated[str,Field(description="The name of the client company ")]
@@ -57,5 +57,10 @@ class PlatformRequestModel(BaseModel):
 
 class TimelineRequestModel(BaseModel):
     enhanced_context:PreparationOutput
-    original_content: TimelineArabicOutput
+    original_content: TimelineEnrichedArabicOutput
+    edit_content: str
+    
+class FunctionalRequestModel(BaseModel):
+    enhanced_context:PreparationOutput
+    original_content: FunctionalRequirementsArabicOutput
     edit_content: str

@@ -186,8 +186,8 @@ FIELDS TO UPDATE WHEN AFFECTED:
 - project_details: update only if the edit changes project scope or business facts
 - platforms: update only if the edit explicitly changes platforms
 - platform_role_map: update only if the edit explicitly changes platform-role relationships
-- tech_stacks: update only if the edit clearly affects technology
-- is_agile: update only if the edit clearly changes the delivery method
+
+
 
 NUMERIC FIELD POLICY:
 Do NOT update total price, phase price, duration_count, or duration_type_ar here.
