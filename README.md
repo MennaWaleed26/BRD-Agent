@@ -1,7 +1,7 @@
-# BRD Agent Antigravity - Technical Documentation
+# BRD Agent  - Technical Documentation
 
 ## Overview
-BRD Agent Antigravity is a modular AI system designed for generating and intelligently editing Business Requirements Documents (BRDs). It utilizes a graph-based workflow for initial generation and a specialized service layer for section-specific modifications. The system is optimized for Arabic and Bilingual (English/Arabic) outputs, ensuring consistent business logic and high-quality phrasing.
+BRD Agent is a modular AI system designed for generating and intelligently editing Business Requirements Documents (BRDs). It utilizes a graph-based workflow for initial generation and a specialized service layer for section-specific modifications. The system is optimized for Arabic and Bilingual (English/Arabic) outputs, ensuring consistent business logic and high-quality phrasing.
 
 ---
 
