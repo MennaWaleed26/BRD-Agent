@@ -46,7 +46,6 @@ class ProjectContext:
             "client_name": self.client_name,
             "client_catrgory": self.client_category,
             "platforms": self.platforms,
-            "tech_stacks": self.tech_stack,
             "is_agile": self.is_agile,
             "num_stages": self.num_stages,
             "timeline_details": self.timeline_details,
