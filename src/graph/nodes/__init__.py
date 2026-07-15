@@ -1,4 +1,4 @@
-from .common_nodes import preparation_node,functional_req_planner_node,router_node,router_after_timeline_validation
+from .common_nodes import preparation_node,functional_req_planner_node,router_node,router_after_timeline_validation, interfaces_actors_node
 from .bilingual_nodes import ( bilingual_entry_node,
                               proposed_system_billingual,
                               functional_requirements_client_experience_billingual,
@@ -13,10 +13,7 @@ from .bilingual_nodes import ( bilingual_entry_node,
 
 from .arabic_nodes import ( arabic_entry_node,
                            proposed_system_ar,
-                           functional_requirements_client_experience_ar,
-                           functional_requirements_internal_management_ar,
-                           functional_requirements_operations_ar,
-                           functional_requirements_merge_ar,
+                           functional_requirements_ar,
                            timeline_ar,
                            validate_timeline_ar,
                            timeline_fallback_ar_node,

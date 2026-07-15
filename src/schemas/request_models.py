@@ -48,6 +48,11 @@ class BRDRequestModel(BaseModel):
 
 
 
+class SuggestMvpRequestModel(ProjectModel):
+    pass
+
+
+
 
 class PlatformRequestModel(BaseModel):
     enhanced_context: PreparationOutput

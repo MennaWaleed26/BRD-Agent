@@ -44,7 +44,7 @@ class ProjectContext:
             "project_idea": self.project_idea,
             "project_details": self.project_details,
             "client_name": self.client_name,
-            "client_catrgory": self.client_category,
+            "client_category": self.client_category,
             "platforms": self.platforms,
             "is_agile": self.is_agile,
             "num_stages": self.num_stages,

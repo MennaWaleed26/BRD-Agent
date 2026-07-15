@@ -186,13 +186,25 @@ class FunctionalModuleDetailLocalized(BaseModel):
 
 class ProposedSystemItemArabic(BaseModel):
 
+    interface_key: str = Field(
+        description=(
+            "Stable interface key copied exactly from InterfacesAndUsersOutput"
+        )
+    )
+
     title_ar: str = Field(
-        description="عنوان عربي قصير فقط من 3 إلى 8 كلمات، وليس جملة طويلة، وليس فقرة"
+        description=(
+            "عنوان عربي قصير وواضح من 2 إلى 6 كلمات يمثل الواجهة، "
+            "وليس اسم مستخدم أو دورًا"
+        )
     )
+
     content_ar: str = Field(
-        description="وصف عربي مهني من 2 إلى 4 جمل،"
+        description=(
+            "وصف عربي مهني من 2 إلى 4 جمل يوضح الغرض من الواجهة، "
+            "المستخدمين المستفيدين منها، وأهم ما تتيحه بصورة عامة"
+        )
     )
-    
     
 # =========================
 # Timeline
@@ -244,37 +256,63 @@ class TimelinePhaseEnrichedArabicItem(BaseModel):
   
 class FeatureDetailArabic(BaseModel):
 
-    title_ar: str = Field(
-        description="عنوان عربي قصير للميزة، وليس فقرة"
+    feature_key: str = Field(
+        description="Stable feature key copied from ModulesAndFeaturesOutput"
     )
 
+    title_ar: str = Field(
+        description="عنوان عربي واضح ومختصر للخاصية"
+    )
 
     description_ar: str = Field(
-        description="شرح مهني واضح للميزة باللغة العربية"
+        description=(
+            "شرح عربي مهني من جملة إلى ثلاث جمل يوضح ما تتيحه الخاصية "
+            "للمستخدم دون تفاصيل تقنية"
+        )
     )
-
- 
-    technical_implementation_ar: List[str] = Field(
-        default_factory=list,
-        description="خطوات تنفيذ واضحة بالعربية"
-    )
-
-
-    additional_ideas_ar: List[str] = Field(
-        default_factory=list,
-        description="أفكار إضافية اختيارية بالعربية تضيف قيمة مستقبلية"
-    )
-
 
 
 class FunctionalModuleDetailArabic(BaseModel):
 
-    title_ar: str = Field(
-        description="عنوان الوحدة باللغة العربية، قصير وواضح"
+    module_key: str = Field(
+        description="Stable module key copied from ModulesAndFeaturesOutput"
     )
 
-    intro_ar: str = Field(
-        description="مقدمة قصيرة للوحدة باللغة العربية، وتطابق intro_en في المعنى"
+    module_title_ar: str = Field(
+        description="عنوان عربي مهني ومختصر للوحدة الوظيفية"
     )
 
-    features: List[FeatureDetailArabic] = Field(default_factory=list)
+    module_overview_ar: str = Field(
+        description=(
+            "مقدمة من جملتين إلى ثلاث تشرح الغرض من الوحدة ودورها ضمن النظام"
+        )
+    )
+
+    workflow_ar: list[str] = Field(
+        default_factory=list,
+        description=(
+            "خطوات أو آلية عمل الوحدة بصياغة مفهومة للعميل. "
+            "لا تُستخدم للوحدات البسيطة إذا لم يكن لها سير عمل واضح"
+        )
+    )
+
+    features: list[FeatureDetailArabic] = Field(
+        default_factory=list,
+        description=(
+            "الخصائص التابعة للوحدة، بحيث يظهر كل Feature مرة واحدة فقط"
+        )
+    )
+
+    business_rules_ar: list[str] = Field(
+        default_factory=list,
+        description=(
+            "ضوابط وقواعد العمل المؤكدة فقط، مثل شروط الاعتماد أو قيود الانتقال"
+        )
+    )
+
+    business_value_ar: list[str] = Field(
+        default_factory=list,
+        description=(
+            "الفوائد التشغيلية المباشرة التي تحققها الوحدة للعميل"
+        )
+    )

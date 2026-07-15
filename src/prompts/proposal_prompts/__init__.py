@@ -1,0 +1,1 @@
+from .interfaces_actors_prompt import interfaces_actors_prompt_template

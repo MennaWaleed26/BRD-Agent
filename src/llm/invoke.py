@@ -69,11 +69,38 @@ async def generate_enhanced_context(
     Shared helper for English generation nodes.
     """
     context=state["context"]
-    controls=state["controls"]
+
+    project_title = context.get("project_name")
+    project_description = context.get("project_idea")
+    project_details = context.get("project_details")
+
     result= await invoke_structured_async(prompt_template=prompt_template,
-                             prompt_variables={"context": context, "controls":controls},
+                             prompt_variables={"project_title": project_title, "project_description":project_description, "project_details":project_details},
                              output_model=output_model) 
     return result 
+
+async def extract_interfaces_and_actors(
+    state:GraphState,
+    prompt_template:Any,
+    output_model:Type[T],
+) ->T:
+    """
+    Shared helper for English generation nodes.
+    """
+    context=state["context"]
+
+    project_title = context.get("project_name")
+    project_description = context.get("project_idea")
+    project_details = context.get("project_details")
+    project_understanding = state.get('enhanced_context')
+
+    result= await invoke_structured_async(prompt_template=prompt_template,
+                             prompt_variables={"project_title": project_title, "project_description":project_description,
+                                                "project_details":project_details,"project_understanding":project_understanding},
+                             output_model=output_model) 
+    return result 
+
+
 
 async def generate_section(
     state:GraphState,
@@ -81,7 +108,8 @@ async def generate_section(
     prompt_template:Any,
     output_model:Type[T],
     run_name:str="unknown",
-    is_timeline:bool = False
+    is_timeline:bool = False,
+    prompt_variables:dict|None =None
     
 ) ->T:
     """
@@ -96,6 +124,8 @@ async def generate_section(
                              run_name=run_name)
         
     else:
+        prompt_variables = prompt_variables if prompt_variables else enhanced_context
+        
         result= await invoke_structured_async(prompt_template=prompt_template,
                              prompt_variables={"enhanced_context": enhanced_context},
                              output_model=output_model,

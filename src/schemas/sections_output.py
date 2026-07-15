@@ -104,16 +104,22 @@ class FinalBRDLocalizedOutput(BaseModel):
 class ProposedSystemArabicOutput(BaseModel):
     key: Literal["proposed_system"] = "proposed_system"
 
-    title_ar: str = Field(
-        default="النظام المقترح",
-        description="عنوان القسم باللغة العربية"
+    title_ar: Literal["النظام المقترح"] = "النظام المقترح"
+
+    overview_ar: str = Field(
+        description=(
+            "مقدمة عربية قصيرة من جملتين إلى ثلاث تصف الحل المقترح "
+            "وكيف تتكامل واجهاته لتحقيق أهداف المشروع"
+        )
     )
 
-    content: List[ProposedSystemItemArabic] = Field(
+    content: list[ProposedSystemItemArabic] = Field(
         default_factory=list,
-        description="قائمة مكونات النظام المقترح باللغة العربية فقط"
+        description=(
+            "عنصر واحد فقط لكل واجهة معتمدة، وبالترتيب نفسه الوارد "
+            "في مخرجات InterfacesAndUsersOutput"
+        )
     )
-
 
 class TimelineArabicOutput(BaseModel):
     key: Literal["timeline"] = "timeline"
@@ -132,25 +138,41 @@ class TimelineEnrichedArabicOutput(BaseModel):
     )
     
 class FunctionalRequirementsGroupArabicOutput(BaseModel):
-    group_key: str = Field(description="Stable internal group key")
-
+    group_key: str = Field(
+        description=(
+            "Stable interface key copied exactly from InterfacesAndUsersOutput"
+        )
+    )
 
     group_title_ar: str = Field(
-        description="عنوان المجموعة باللغة العربية"
+        description="عنوان الواجهة باللغة العربية"
     )
-
 
     group_intro_ar: str = Field(
-        description="مقدمة قصيرة للمجموعة باللغة العربية"
+        description=(
+            "مقدمة عربية قصيرة توضح دور الواجهة والمستخدمين الذين يتعاملون معها"
+        )
     )
 
-    modules: List[FunctionalModuleDetailArabic] = Field(default_factory=list)
+    modules: list[FunctionalModuleDetailArabic] = Field(
+        default_factory=list
+    )
 
 class FunctionalRequirementsArabicOutput(BaseModel):
     key: Literal["functional_requirements"] = "functional_requirements"
-    title_ar: Literal["الوحدات الوظيفية التفصيلية"] = "الوحدات الوظيفية التفصيلية"
 
-    content: List[FunctionalRequirementsGroupArabicOutput] = Field(
+    title_ar: Literal[
+        "الوحدات الوظيفية التفصيلية"
+    ] = "الوحدات الوظيفية التفصيلية"
+
+    introduction_ar: str = Field(
+        description=(
+            "مقدمة موجزة توضح أن القسم يعرض الوحدات والخصائص الرئيسية "
+            "لكل واجهة من واجهات النظام"
+        )
+    )
+
+    content: list[FunctionalRequirementsGroupArabicOutput] = Field(
         default_factory=list
     )
 

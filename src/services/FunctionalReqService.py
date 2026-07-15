@@ -4,7 +4,7 @@ from typing import List
 from src.schemas.preparation import PreparationOutput
 from src.schemas.sections_output import FunctionalRequirementsArabicOutput
 from src.llm.invoke import invoke_structured_async
-from src.prompts.edit_func_req_prompts import (functional_edit_classifier_template,
+from src.prompts.edit_prompts.edit_func_req_prompts import (functional_edit_classifier_template,
                                                functional_mode_a_revision_template,
                                                functional_mode_b_revision_template)
 

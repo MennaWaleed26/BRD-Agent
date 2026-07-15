@@ -12,9 +12,9 @@ from src.schemas.sections_output import (
     FinalBRDLocalizedOutput,
     
 )
-from src.prompts.proposed_system_prompt import proposed_system_bill_template
-from src.prompts.timeline_prompt import timeline_prompt_template
-from src.prompts.functional_req_group_prompt import functional_requirements_group_prompt_template
+from src.prompts.proposal_prompts.proposed_system_prompt import proposed_system_bill_template
+from src.prompts.proposal_prompts.timeline_prompt import timeline_prompt_template
+from src.prompts.proposal_prompts.functional_req_group_prompt import functional_requirements_group_prompt_template
 from ..validators.timeline_enricher import enrich_timeline_bi_stages
 
 

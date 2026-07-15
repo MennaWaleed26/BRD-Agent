@@ -1,10 +1,9 @@
 import uvicorn # type: ignore
 from fastapi import FastAPI # type: ignore
 from dotenv import load_dotenv # type: ignore
-from src.routes.generate import brd_router # type: ignore
-from src.routes.edit_platforms import platforms_router
-from src.routes.edit_timeline import timeline_router
-from src.routes.edit_func_req import func_req_router
+from src.routes import brd_router, platforms_router, timeline_router, func_req_router, mvp_router
+
+
 load_dotenv()
 app=FastAPI()
 
@@ -16,7 +15,8 @@ app.include_router(router=brd_router)
 app.include_router(router=platforms_router)
 app.include_router(router=timeline_router)
 app.include_router(router=func_req_router)
+app.include_router(router=mvp_router)
 
 
 if __name__=="__main__":
-    uvicorn.run("main:app", host="0.0.0.0",port=8000,reload=True)
+    uvicorn.run("main:app", host="0.0.0.0",port=8080,reload=True)

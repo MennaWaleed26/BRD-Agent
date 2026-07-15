@@ -6,8 +6,8 @@ from src.llm.invoke import invoke_structured_async
 from src.schemas.preparation import PreparationOutput
 
 from src.llm.invoke import invoke_structured_async
-from src.prompts.timeline_prompt import timeline_arabic_prompt_template
-from src.prompts.edit_timeline_prompts import (timeline_edit_classifier_template,
+from src.prompts.proposal_prompts.timeline_prompt import timeline_arabic_prompt_template
+from src.prompts.edit_prompts.edit_timeline_prompts import (timeline_edit_classifier_template,
                                                timeline_mode_a_revision_template,
                                                timeline_mode_b_context_update_template)
 from src.schemas.sections_output import TimelineArabicOutput,TimelineEnrichedArabicOutput

@@ -2,8 +2,8 @@ from enum import Enum
 from pydantic import BaseModel,Field
 from typing import List
 from src.llm.invoke import invoke_structured_async
-from src.prompts.edit_platforms_prompt import edit_classifier_template, mode_a_revision_template , mode_b_context_update_template
-from src.prompts.proposed_system_prompt import proposed_system_ar_template
+from src.prompts.edit_prompts.edit_platforms_prompt import edit_classifier_template, mode_a_revision_template , mode_b_context_update_template
+from src.prompts.proposal_prompts.proposed_system_prompt import proposed_system_ar_template
 from src.schemas.preparation import PreparationOutput
 from src.schemas.sections_output import ProposedSystemArabicOutput
 

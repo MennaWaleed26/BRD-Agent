@@ -12,9 +12,9 @@ from src.schemas.sections_output import (
     FinalBRDArabicOutput,
     
 )
-from src.prompts.proposed_system_prompt import proposed_system_ar_template
-from src.prompts.timeline_prompt import timeline_arabic_prompt_template
-from src.prompts.functional_req_group_prompt import functional_requirements_group_ar_template
+from src.prompts.proposal_prompts.proposed_system_prompt import proposed_system_ar_template
+from src.prompts.proposal_prompts.timeline_prompt import timeline_arabic_prompt_template
+from src.prompts.proposal_prompts.functional_req_group_prompt import functional_requirements_group_ar_template
 from src.graph.validators.timeline_enricher import enrich_timeline_ar_stages
 
 
@@ -110,68 +110,76 @@ async def timeline_fallback_ar_node(state:GraphState):
         "timeline_error": "Used fallback after 3 failed validation attempts.",
     }
     
+async def functional_requirements_ar(state: GraphState):
     
-async def functional_requirements_operations_ar(state:GraphState):
-    enhanced_context = state["enhanced_context"]
-    group_plan = state["functional_requirements_plan"] ["operations_and_project_lifecycle"]
-    
-    functional_requirements_operations= await base_node.functional_requirements_operations_node(
-        state=state,
-        enhanced_context=enhanced_context,
-        group_plan=group_plan,
-        output_model=FunctionalRequirementsGroupArabicOutput,
-        run_name="Func Req Operations Node",
-        prompt_template=functional_requirements_group_ar_template
+
+    response= await base_node.functional_requirements_node(
+        state= state ,prompt_template= functional_requirements_group_ar_template, output_model= FunctionalRequirementsGroupArabicOutput,run_name= "Func Req Node"
     )
+    return {"functional_requirements":response.model_dump()}
+
+
+# async def functional_requirements_operations_ar(state:GraphState):
+#     enhanced_context = state["enhanced_context"]
+#     group_plan = state["functional_requirements_plan"] ["operations_and_project_lifecycle"]
+    
+#     functional_requirements_operations= await base_node.functional_requirements_operations_node(
+#         state=state,
+#         enhanced_context=enhanced_context,
+#         group_plan=group_plan,
+#         output_model=FunctionalRequirementsGroupArabicOutput,
+#         run_name="Func Req Operations Node",
+#         prompt_template=functional_requirements_group_ar_template
+#     )
     
 
-    print("Success: functional_requirements_operations_node")
+#     print("Success: functional_requirements_operations_node")
     
-    return {"functional_requirements_operations":functional_requirements_operations.model_dump()}
+#     return {"functional_requirements_operations":functional_requirements_operations.model_dump()}
 
-async def  functional_requirements_internal_management_ar(state:GraphState):
-    enhanced_context=state["enhanced_context"]
-    group_plan=state["functional_requirements_plan"] ["internal_business_management"]
+# async def  functional_requirements_internal_management_ar(state:GraphState):
+#     enhanced_context=state["enhanced_context"]
+#     group_plan=state["functional_requirements_plan"] ["internal_business_management"]
     
-    functional_requirements_internal_management= await base_node.functional_requirements_internal_management_node(state,
-        enhanced_context=enhanced_context,
-        group_plan=group_plan,
-        output_model=FunctionalRequirementsGroupArabicOutput,
-        run_name="Func Req Internal Management Node",
-        prompt_template=functional_requirements_group_ar_template) 
+#     functional_requirements_internal_management= await base_node.functional_requirements_internal_management_node(state,
+#         enhanced_context=enhanced_context,
+#         group_plan=group_plan,
+#         output_model=FunctionalRequirementsGroupArabicOutput,
+#         run_name="Func Req Internal Management Node",
+#         prompt_template=functional_requirements_group_ar_template) 
     
 
-    print("Success: functional_requirements_internal_management_node")
+#     print("Success: functional_requirements_internal_management_node")
     
-    return {"functional_requirements_internal_management":functional_requirements_internal_management.model_dump()}
+#     return {"functional_requirements_internal_management":functional_requirements_internal_management.model_dump()}
 
 
-async def functional_requirements_client_experience_ar(state: GraphState) -> Dict[str, Any]:
-    enhanced_context = state["enhanced_context"]
-    group_plan = state["functional_requirements_plan"]["client_digital_experience"]
+# async def functional_requirements_client_experience_ar(state: GraphState) -> Dict[str, Any]:
+#     enhanced_context = state["enhanced_context"]
+#     group_plan = state["functional_requirements_plan"]["client_digital_experience"]
 
-    functional_requirements_client_experience= await base_node.functional_requirements_client_experience_node(state,
-            enhanced_context=enhanced_context,
-            group_plan=group_plan,
-            output_model=FunctionalRequirementsGroupArabicOutput,
-            run_name="Func Req Client Experience Node",
-            prompt_template=functional_requirements_group_ar_template)
+#     functional_requirements_client_experience= await base_node.functional_requirements_client_experience_node(state,
+#             enhanced_context=enhanced_context,
+#             group_plan=group_plan,
+#             output_model=FunctionalRequirementsGroupArabicOutput,
+#             run_name="Func Req Client Experience Node",
+#             prompt_template=functional_requirements_group_ar_template)
  
     
-    print("Success: functional_requirements_client_experience_node")
-    return {"functional_requirements_client_experience":functional_requirements_client_experience.model_dump() }
+#     print("Success: functional_requirements_client_experience_node")
+#     return {"functional_requirements_client_experience":functional_requirements_client_experience.model_dump() }
 
 
-async def functional_requirements_merge_ar(state: GraphState) -> Dict[str, Any]:
+# async def functional_requirements_merge_ar(state: GraphState) -> Dict[str, Any]:
 
-    keys=["functional_requirements_operations","functional_requirements_internal_management","functional_requirements_client_experience"]
+#     keys=["functional_requirements_operations","functional_requirements_internal_management","functional_requirements_client_experience"]
 
-    result=await base_node.functional_requirements_merge_node(state=state,
-                                                              validate_model=FunctionalRequirementsGroupArabicOutput,
-                                                              output_model=FunctionalRequirementsArabicOutput,
-                                                              keys=keys)
+#     result=await base_node.functional_requirements_merge_node(state=state,
+#                                                               validate_model=FunctionalRequirementsGroupArabicOutput,
+#                                                               output_model=FunctionalRequirementsArabicOutput,
+#                                                               keys=keys)
 
-    return {"functional_requirements": result.model_dump()}
+#     return {"functional_requirements": result.model_dump()}
 
 
 async def Final_BRD_ar(state:GraphState):

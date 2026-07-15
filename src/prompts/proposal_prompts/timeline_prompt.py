@@ -341,6 +341,7 @@ TIMELINE_ARABIC_TEMPLATE = """
 11) عنوان القسم
 - الجدول الزمني للتنفيذ
 
+
 Enhanced Context:
 {enhanced_context}
 
@@ -352,5 +353,5 @@ Validation Error From Previous Attempt:
 
 timeline_arabic_prompt_template = PromptTemplate(
     template=TIMELINE_ARABIC_TEMPLATE,
-    input_variables=["enhanced_context","timeline_error"]
+    input_variables=["project_details","enhanced_context","timeline_error"]
 )
