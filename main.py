@@ -1,7 +1,7 @@
 import uvicorn # type: ignore
 from fastapi import FastAPI # type: ignore
 from dotenv import load_dotenv # type: ignore
-from src.routes import brd_router, platforms_router, timeline_router, func_req_router, mvp_router
+from src.routes import brd_router, mvp_router
 
 
 load_dotenv()
@@ -12,9 +12,9 @@ app=FastAPI()
 def read_root():
     return {"message": "Welcome to the Brd generation API"}
 app.include_router(router=brd_router)
-app.include_router(router=platforms_router)
-app.include_router(router=timeline_router)
-app.include_router(router=func_req_router)
+# app.include_router(router=platforms_router)
+# app.include_router(router=timeline_router)
+# app.include_router(router=func_req_router)
 app.include_router(router=mvp_router)
 
 

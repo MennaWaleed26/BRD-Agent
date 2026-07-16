@@ -1,7 +1,7 @@
 from copy import deepcopy
 from src.schemas.request_models import BRDRequestModel  # type: ignore
 from src.services.NormalizeService import normalize_request
-from src.graph.workflow import brd_graph
+from src.ai.Proposal.workflow import brd_graph
 from ..domain import build_preparation_prompt_inputs
 
 class BRDService:

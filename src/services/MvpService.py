@@ -2,8 +2,7 @@ from src.schemas import SuggestMvpRequestModel
 from langchain_core.messages import SystemMessage
 from langchain_openai import ChatOpenAI
 from src.helpers.config import settings
-from src.prompts import SUGGEST_MVP_TEMPLATE
-from src.schemas import SuggestedMVP
+from src.ai.SuggestMvp import SUGGEST_MVP_TEMPLATE, SuggestedMVP
 
 class MvpService:
 
