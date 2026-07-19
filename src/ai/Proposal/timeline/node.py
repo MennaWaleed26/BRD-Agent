@@ -2,8 +2,9 @@ from typing import Any, Dict, List, Literal
 from fastapi import status, HTTPException
 from src.ai.Proposal.state import GraphState
 from src.ai.Proposal.state import GraphState
-from .schema import TimelineArabicOutput, TimelineEnrichedArabicOutput, TimelineLocalizedOutput, TimelineEnrichedLocalizedOutput
-from .prompt import timeline_arabic_prompt_template, timeline_bill_prompt_template
+from .schemas import (NormalTimelineArabicOutput, NormalTimelineEnrichedArabicOutput, TimelineLocalizedOutput,
+                       TimelineEnrichedLocalizedOutput, MVPTimelineArabicOutput, MVPTimelineEnrichedArabicOutput)
+from .prompts import timeline_arabic_prompt_template, timeline_bill_prompt_template,mvp_timeline_arabic_prompt_template
 from src.ai.llm.invoke import generate_section
 
 
@@ -14,6 +15,8 @@ class SectionValidationError(Exception):
 class Timeline:
     def __init__(self):
         pass
+
+    
 
     def _enrich_timeline_ar_stages(self,context,raw_timeline_output):
     
@@ -110,11 +113,12 @@ class Timeline:
     
     
 
-    async def timeline_node(self,state:GraphState,prompt_template, output_model,run_name,is_timeline):
+    async def timeline_node(self,state:GraphState,prompt_template,prompt_variables, output_model,run_name,is_timeline):
                 
             response= await generate_section(
                 state=state,
                 prompt_template=prompt_template,
+                prompt_variables=prompt_variables,
                 output_model= output_model,
                 run_name= run_name,
                 is_timeline=is_timeline
@@ -127,14 +131,38 @@ class Timeline:
 
     async def timeline_ar(self, state:GraphState):
         
-        response= await self.timeline_node(
-            state=state,
-            prompt_template=timeline_arabic_prompt_template,
-            output_model=TimelineArabicOutput,
-            run_name="Timeline Arabic Node",
-            is_timeline=True
-        )
-        
+        context = state["context"]
+        project_title = context['project_name']
+        project_details = context['project_details']
+        num_stages = context["num_stages"] 
+        is_mvp = context['is_mvp']
+        mvp_summary = context["mvp_summary"]
+        mvp_features = context["mvp_features"]
+        timeline_error = state.get("timeline_error","")
+
+        if not is_mvp:
+            prompt_variables = {"project_title":project_title, "project_details":project_details ,"num_stages":num_stages, "timeline_error":timeline_error}
+            response= await self.timeline_node(
+                state=state,
+                prompt_template=timeline_arabic_prompt_template,
+                prompt_variables = prompt_variables,
+                output_model=NormalTimelineArabicOutput,
+                run_name="Timeline Arabic Node",
+                is_timeline=True
+            )
+        else:
+            prompt_variables = {"project_title":project_title, "project_details":project_details, "mvp_summary":mvp_summary, 
+                                "mvp_features":mvp_features, "num_stages":num_stages, "timeline_error":timeline_error}
+            
+            response= await self.timeline_node(
+                state=state,
+                prompt_template=mvp_timeline_arabic_prompt_template,
+                prompt_variables = prompt_variables,
+                output_model=MVPTimelineArabicOutput,
+                run_name="Timeline Arabic Node",
+                is_timeline=True
+            )           
+            
         
         
         enriched_timeline = self._enrich_timeline_ar_stages(state["context"], raw_timeline_output=response.model_dump())
@@ -150,7 +178,7 @@ class Timeline:
             actual_stages =len(timeline.get("content")) # type: ignore
             if actual_stages != expected_stages:
                 raise SectionValidationError(
-                    f"Expected {expected_stages} but got {actual_stages}"
+                    f"Expected the time line to be {expected_stages} phases but got {actual_stages} phase/phases so regenerate only to produce {expected_stages} phases"
                 )
             return {
                 "timeline_validated":timeline,
@@ -172,25 +200,31 @@ class Timeline:
         days_per_stage=context.get("days_per_stage")
         total_price=context.get("total_price",0)
         stage_price = round(total_price / num_stages, 2)
+        timeline_content = timeline.get("content",[])
         
-        remaining_stages=len(timeline.get("content"))-num_stages # type: ignore
+        remaining_stages= num_stages - len(timeline.get("content"))  # type: ignore
+        
         safe_content=[]
-        j=num_stages+1 # type: ignore
-        for _ in range(remaining_stages):
-            safe_content.append({
-                "phase_number": j,
-                "title_ar": f"المرحلة {j}",
-                "duration_count": days_per_stage,
-                "duration_type_ar": "ايام",
-                "steps_ar": ["يُستكمل لاحقًا"],
-                "price":stage_price
-            })
-            j+=1
+        if remaining_stages>0:  
+            safe_content.append(timeline_content)
+            j= len(timeline.get("content")) + 1 # type: ignore
+            for _ in range(remaining_stages):
+                safe_content.append({
+                    "phase_number": j,
+                    "title_ar": f"المرحلة {j}",
+                    "duration_count": days_per_stage,
+                    "duration_type_ar": "ايام",
+                    "steps_ar": ["يُستكمل لاحقًا"],
+                    "price":stage_price
+                })
+                j+=1
+        else:
+            safe_content =timeline_content[:num_stages]
         return {
             "timeline_validated": {
                 "key": "timeline",
                 "title_ar": "الجدول الزمني للتنفيذ",
-                "content": timeline.get("content",[])+safe_content
+                "content": safe_content
             },
             "timeline_error": "Used fallback after 3 failed validation attempts.",
         }
@@ -280,6 +314,14 @@ class Timeline:
 
         return "timeline_fallback_node"
 
+    async def timeline_type_router(self,state:GraphState)-> Literal["mvp_sequence","normal_sequence"]:
+        context=state.get('context')
+        is_mvp = context['is_mvp']
+
+        if is_mvp :
+            return "mvp_sequence"
+        return "normal_sequence"
+    
     async def finish_timeline_ar_node(self, state: GraphState):
         return {}
 

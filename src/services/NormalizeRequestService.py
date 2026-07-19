@@ -11,6 +11,7 @@ class ProjectContext:
         self.project_name=raw_request.project.title
         self.project_idea=raw_request.project.desc
         self.project_details=raw_request.project.details
+        self.is_mvp = raw_request.is_mvp
         
         
         self.client_name=raw_request.client.name
@@ -28,6 +29,11 @@ class ProjectContext:
         if raw_request.tech_stack_ids:
             self.tech_stack=[ tech_stack.title for tech_stack in raw_request.tech_stack_ids]
         
+        self.mvp_features ={}
+        self.mvp_summary=""
+        if self.is_mvp:
+            self.mvp_summary = raw_request.required_mvp.summary
+            self.mvp_features ={feature.name: feature.description for feature in raw_request.required_mvp.mvp_features}
         c=raw_request.constraints
         if c:
             val=str(c.is_agile).strip().lower()
@@ -36,7 +42,7 @@ class ProjectContext:
             self.timeline_details=c.deadline.timeline_details
             self.total_price=c.total_price
             self.days_per_stage=c.deadline.days_per_stage
-            
+        
     def to_dict(self)->Dict[str,Any]:
         return {
             "languages": self.languages,
@@ -50,6 +56,9 @@ class ProjectContext:
             "num_stages": self.num_stages,
             "timeline_details": self.timeline_details,
             "total_price":self.total_price,
+            "is_mvp":self.is_mvp,
+            "mvp_summary":self.mvp_summary ,
+            "mvp_features":self.mvp_features ,
             "days_per_stage":self.days_per_stage
             
         }

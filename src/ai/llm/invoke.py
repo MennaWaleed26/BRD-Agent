@@ -117,17 +117,10 @@ async def generate_section(
     """
     context=state["context"]
     project_details = context["project_details"]
-    if is_timeline:
-        timeline_error=state.get("timeline_error","")
-        result= await invoke_structured_async(prompt_template=prompt_template,
-                             prompt_variables={"enhanced_context": project_details ,"timeline_error":timeline_error},
-                             output_model=output_model,
-                             run_name=run_name)
+
+    prompt_variables = prompt_variables if prompt_variables else {"enhanced_context":project_details}
         
-    else:
-        prompt_variables = prompt_variables if prompt_variables else {"enhanced_context":project_details}
-        
-        result= await invoke_structured_async(prompt_template=prompt_template,
+    result= await invoke_structured_async(prompt_template=prompt_template,
                              prompt_variables=prompt_variables,
                              output_model=output_model,
                              run_name=run_name)

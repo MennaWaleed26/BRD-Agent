@@ -207,139 +207,190 @@ timeline_bill_prompt_template = PromptTemplate(
 
 
 
-TIMELINE_ARABIC_TEMPLATE = TIMELINE_ARABIC_TEMPLATE = """
-You are a senior business analyst and software project planning expert.
+TIMELINE_ARABIC_TEMPLATE =  """
+أنت مدير مشاريع برمجية أول (Senior Software Delivery Manager) وخبير في إعداد الجداول الزمنية للمشاريع التقنية.
 
-Generate the "Implementation Timeline" section of a business proposal.
+مهمتك هي إنشاء قسم **"الجدول الزمني للتنفيذ"** ضمن وثيقة تحليل متطلبات الأعمال (BRD) باللغة العربية فقط.
 
-The final output must be written in clear, simple, professional Arabic suitable for a non-technical client who will receive the proposal.
+اعتبر البيانات المدخلة المصدر الرسمي الوحيد لهذا القسم، ولا تضف افتراضات أو نطاقًا غير مذكور في المشروع.
 
-Use only the project data provided below.
+--------------------------------------------------
 
-Project title:
+## بيانات المشروع
+
+اسم المشروع:
 {project_title}
 
-Project details:
+تفاصيل المشروع:
 {project_details}
 
-Platforms:
-{platforms}
+--------------------------------------------------
 
-Required number of stages:
-{num_stages}
+## الهدف
 
-Agile execution:
-{is_agile}
+إعداد جدول زمني احترافي وواقعي يوضح كيفية تنفيذ المشروع وتسليمه للعميل من خلال **{num_stages} مرحلة**.
 
-Timeline instructions:
-{timeline_details}
+يجب أن يعكس الجدول الزمني رحلة تنفيذ حقيقية للمشروع بحيث تتقدم كل مرحلة على ما قبلها وتضيف جزءًا مكتملًا من النظام حتى الوصول إلى التسليم النهائي.
 
-Previous validation error:
+--------------------------------------------------
+
+## قواعد إنشاء المراحل
+
+- يجب إنشاء **عدد مراحل يساوي تمامًا {num_stages}**.
+- لا تنشئ مراحل أكثر أو أقل.
+- يبدأ ترقيم المراحل من 1 بالتسلسل.
+- يجب أن تكون المراحل مترابطة منطقيًا.
+- يجب أن يبني كل جزء جديد على ما تم إنجازه في المرحلة السابقة.
+- وزّع نطاق المشروع بشكل متوازن على جميع المراحل.
+- لا تؤجل معظم أعمال التنفيذ إلى المرحلة الأخيرة.
+
+--------------------------------------------------
+
+## سياسة التنفيذ
+
+اعتبر أن كل مرحلة تمثل **دورة تنفيذ (Iteration)** كاملة.
+
+لذلك يجب أن تحتوي كل مرحلة بشكل واضح على:
+
+- تحليل أو مراجعة المتطلبات الخاصة بنطاق تلك المرحلة.
+- تصميم أو تخطيط ما سيتم تنفيذه.
+- تنفيذ الجزء المخصص من المشروع.
+- اختبار والتحقق من الأعمال المنفذة.
+- مخرج عملي مكتمل يمكن للعميل مراجعته.
+
+لا يجوز إنشاء مرحلة تحتوي فقط على:
+
+- تحليل
+- تصميم
+- تخطيط
+- تنفيذ
+- اختبار
+
+بل يجب أن تجمع كل مرحلة هذه الأنشطة بصورة طبيعية حسب نطاقها.
+
+حتى المرحلة الأولى يجب أن تتضمن تنفيذًا فعليًا واختبارات وتسليم جزء أولي من المشروع.
+
+--------------------------------------------------
+
+## توزيع العمل
+
+- يجب أن يعتمد توزيع الأنشطة على تفاصيل المشروع.
+- ركز في كل مرحلة على مجموعة مترابطة من الخصائص أو الأعمال.
+- اجعل التحليل والتصميم متعلقين فقط بما سيتم تنفيذه في تلك المرحلة.
+- اجعل الاختبارات خاصة بما تم تطويره داخل نفس المرحلة.
+- المرحلة الأخيرة يجب أن تنتهي باستكمال جميع الأعمال، والاختبارات النهائية، والتسليم النهائي.
+
+--------------------------------------------------
+
+## أسلوب الكتابة
+
+- اكتب باللغة العربية الفصحى الاحترافية.
+- اجعل النص مناسبًا للعميل غير التقني.
+- ركز على النتائج ومخرجات الأعمال أكثر من التفاصيل البرمجية.
+- صف التنفيذ على شكل قدرات ووظائف أو أجزاء مكتملة من المشروع.
+- تجنب التفاصيل التقنية منخفضة المستوى.
+
+أمثلة جيدة:
+
+استكمال خصائص إدارة الطلبات وربطها بسير العمل.
+
+تنفيذ نظام إدارة الشهادات وربطه بالموقع.
+
+اختبار النسخة المنفذة واعتمادها للانتقال إلى المرحلة التالية.
+
+أمثلة يجب تجنبها:
+
+إنشاء REST API.
+
+إضافة Database Tables.
+
+كتابة Endpoints.
+
+--------------------------------------------------
+
+## عناوين المراحل
+
+- يجب أن يكون عنوان كل مرحلة قصيرًا وواضحًا.
+- يجب أن يعبر عن المخرج الرئيسي للمرحلة.
+- لا تستخدم عناوين عامة مثل:
+    - المرحلة الأولى
+    - التنفيذ
+    - التطوير
+
+بل استخدم عناوين مرتبطة بالمشروع مثل:
+
+- إطلاق الصفحات الأساسية
+- تطوير إدارة المحتوى
+- تشغيل نظام الشهادات
+- التكامل والإطلاق النهائي
+
+--------------------------------------------------
+
+## خطوات المرحلة
+
+يجب أن تحتوي كل مرحلة على **3 إلى 5 خطوات**.
+
+يجب أن تمثل الخطوات معًا:
+
+- التحليل أو المراجعة
+- التصميم
+- التنفيذ
+- الاختبار
+- المخرج النهائي للمرحلة
+
+يمكن دمج نشاطين في خطوة واحدة إذا كان ذلك طبيعيًا.
+
+يجب أن تكون كل خطوة:
+
+- واضحة ومختصرة.
+- تمثل فكرة رئيسية واحدة.
+- مرتبطة مباشرة بنطاق المرحلة.
+- مفهومة للعميل.
+- غير مكررة مع المراحل السابقة.
+
+تجنب جمع عدد كبير من الأعمال غير المرتبطة داخل خطوة واحدة.
+
+--------------------------------------------------
+
+## فحص إلزامي قبل الإخراج
+
+قبل إنشاء النتيجة النهائية تحقق داخليًا من الآتي:
+
+- عدد المراحل يساوي {num_stages}.
+- كل مرحلة تحتوي على تحليل وتصميم وتنفيذ واختبار.
+- كل مرحلة تنتهي بمخرج عملي مكتمل.
+- المراحل مترابطة ولا تحتوي على تكرار غير ضروري.
+- اللغة مناسبة لوثيقة تجارية موجهة للعميل.
+
+--------------------------------------------------
+
+## تصحيح المحاولة السابقة
+
+إذا كانت الرسالة التالية غير فارغة:
+
 {timeline_error}
 
-Mandatory rules:
+فاعتبرها ملاحظة تصحيح إلزامية.
 
-Generate exactly {num_stages} stages.
-Do not generate fewer stages.
-Do not generate more stages.
-Distribute the project scope and listed platforms logically across the stages.
-Cover all important parts of the project.
-Do not add features or platforms that are not supported by the provided data.
-If timeline_details is provided, use it as the main planning guidance for:
-Stage focus
-Stage sequence
-Main activities
-Expected progress
+أعد إنشاء القسم بالكامل بعد معالجة الخطأ.
 
-It must not change the required number of stages.
+لا تكرر نفس الخطأ مرة أخرى.
 
-If num_stages = 1:
-Include the complete execution cycle in one stage.
-The stage must cover analysis, design, development, testing, and delivery readiness.
-Do not mention future stages or postponed work.
-Keep the stage balanced and representative of the full project scope.
-If num_stages = 2:
-The first stage should focus on requirements, planning, design, and core implementation.
-The second stage should focus on completing development, integration, testing, launch readiness, and delivery.
-If num_stages is 3 or more:
-Early stages should focus on requirements, planning, foundation, and core features.
-Middle stages should focus on development, completion, and integration.
-The final stage should focus on testing, launch readiness, training, and delivery.
-Each stage must build logically on the previous stage.
-If is_agile = true:
-Each stage must clearly include:
-Requirements analysis or refinement
-Design or planning
-Development or implementation
-Testing or validation
+--------------------------------------------------
 
-A fifth step may be added for integration, review, launch preparation, training, or delivery when needed.
+## قواعد الإخراج
 
-Each stage must contain 4 to 5 steps only.
-Keep each step:
-Clear
-Practical
-Short
-Related to the actual project scope
-Easy for a non-technical client to understand
-Avoid:
-Deep technical details
-Programming terms
-Database or infrastructure implementation details
-Repeating the same steps across all stages
-Long sentences
-Generic statements with no practical meaning
-Each title_ar must:
-Be short
-Clearly describe the main goal of the stage
-Use simple Arabic
-Avoid overly technical wording
-Use simple and natural Arabic.
-Prefer client-friendly expressions such as:
-تحليل المتطلبات
-تصميم تجربة الاستخدام
-تنفيذ الوظائف الأساسية
-ربط مكونات النظام
-اختبار الوظائف
-تجهيز النظام للإطلاق
-التدريب والتسليم
-
-Avoid mixed Arabic-English wording such as:
-
-Refinement
-End-to-end
-Sprint
-Backend
-Frontend
-
-Use Arabic equivalents instead.
-
-Do not generate or mention:
-phase_number
-duration_count
-duration_type_ar
-Number of days
-Stage price
-Total price
-
-The system will add these values automatically.
-
-If timeline_error is not empty:
-Treat it as a mandatory correction instruction.
-Regenerate the complete timeline.
-Fully correct the previous error.
-Do not repeat the same mistake.
-Before returning the result, verify internally that:
-The number of stages equals {num_stages} exactly.
-Each Agile stage includes analysis, design, development, and testing.
-All important platforms are covered.
-The Arabic is simple and suitable for the client.
-Any previous validation error has been corrected.
-
-Return only the structured output required by the output schema.
+- أنشئ EXACTLY {num_stages} مرحلة.
+- كل مرحلة تحتوي على 3 إلى 5 خطوات.
+- أعد JSON فقط.
+- لا تضف أي حقول خارج الـ Schema المطلوبة.
 """
+timeline_arabic_prompt_template = PromptTemplate(
+    template=TIMELINE_ARABIC_TEMPLATE,
+    input_variables=["project_title", "project_details", "num_stages", "timeline_error"]
+)
 
-###olde prompt 
+###old prompt 
 # أنت محلل أعمال أول وخبير تخطيط وتنفيذ مشاريع تقنية.
 
 # قم بإنشاء قسم "الجدول الزمني للتنفيذ" ضمن وثيقة تحليل متطلبات الأعمال (BRD) باللغة العربية فقط.
@@ -483,7 +534,3 @@ Return only the structured output required by the output schema.
 # أعد النتيجة وفق الهيكل المطلوب فقط.
 # """
 
-timeline_arabic_prompt_template = PromptTemplate(
-    template=TIMELINE_ARABIC_TEMPLATE,
-    input_variables=["project_details","enhanced_context","timeline_error"]
-)

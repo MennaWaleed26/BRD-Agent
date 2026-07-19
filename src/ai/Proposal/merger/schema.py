@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import Annotated, Union, List
 from ..proposed_system import ProposedSystemArabicOutput,ProposedSystemLocalizedOutput
-from ..timeline import TimelineEnrichedArabicOutput, TimelineEnrichedLocalizedOutput
+from ..timeline import NormalTimelineEnrichedArabicOutput, TimelineEnrichedLocalizedOutput
 from ..requirements_writer import FunctionalRequirementsArabicOutput, FunctionalRequirementsLocalizedOutput
 
 BRDSectionsLocalized=Annotated[
@@ -25,7 +25,7 @@ class FinalBRDLocalizedOutput(BaseModel):
 BRDSectionsArabic=Annotated[
     Union[
     ProposedSystemArabicOutput,
-    TimelineEnrichedArabicOutput,
+    NormalTimelineEnrichedArabicOutput,
     FunctionalRequirementsArabicOutput
 ],  Field(discriminator="key")]
 class FinalBRDArabicOutput(BaseModel):

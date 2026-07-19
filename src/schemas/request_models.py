@@ -2,7 +2,7 @@
 from pydantic import BaseModel, Field
 from typing import List,Annotated,Any,Dict,Literal
 from src.ai.Proposal.proposed_system import ProposedSystemArabicOutput
-from src.ai.Proposal.timeline import  TimelineEnrichedArabicOutput
+from src.ai.Proposal.timeline import  NormalTimelineEnrichedArabicOutput
 from src.ai.Proposal.requirements_writer import FunctionalRequirementsArabicOutput
 
 class ClientModel(BaseModel):
@@ -37,13 +37,23 @@ class ConstraintsModel(BaseModel):
     deadline:DeadlineModel
     is_agile:bool
     total_price:Annotated[int,Field(gt=0)]
+
+class MVPFeature(BaseModel):
+    name: str
+    description: str
+
+class RequiredMVP(BaseModel):
+    summary: str
+    mvp_features:List[MVPFeature] 
     
 class BRDRequestModel(BaseModel):
     language_targets:Annotated[List[str],Field(description="the difference languages that the project should support")]
     client:Annotated[ClientModel,Field(description="Information about the client that the brd is generated to")]
     project:Annotated[ProjectModel,Field(description="Information about the client's idea we generate the brd for")]
     platforms:Annotated[List[PlatformModel]|None,Field(description="the platforms that the client asked to have")]=None
-    tech_stack_ids:List[TechStackModel]
+    tech_stack_ids:List[TechStackModel]|None = None
+    is_mvp:bool
+    required_mvp : RequiredMVP|None = None
     constraints:ConstraintsModel
 
 
@@ -63,7 +73,7 @@ class PlatformRequestModel(BaseModel):
 
 class TimelineRequestModel(BaseModel):
 
-    original_content: TimelineEnrichedArabicOutput
+    original_content: NormalTimelineEnrichedArabicOutput
     edit_content: str
     
 class FunctionalRequestModel(BaseModel):
