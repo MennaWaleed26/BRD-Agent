@@ -60,24 +60,7 @@ async def invoke_structured_async(
             continue
     raise last_error if last_error else RuntimeError("All models failed.") # type: ignore
    
-async def generate_enhanced_context(
-    state:GraphState,
-    prompt_template:Any,
-    output_model:Type[T],
-) ->T:
-    """
-    Shared helper for English generation nodes.
-    """
-    context=state["context"]
 
-    project_title = context.get("project_name")
-    project_description = context.get("project_idea")
-    project_details = context.get("project_details")
-
-    result= await invoke_structured_async(prompt_template=prompt_template,
-                             prompt_variables={"project_title": project_title, "project_description":project_description, "project_details":project_details},
-                             output_model=output_model) 
-    return result 
 
 async def extract_interfaces_and_actors(
     state:GraphState,
@@ -127,30 +110,52 @@ async def generate_section(
     return result
     
 
-async def generate_functional_requirements_group(
-    enhanced_context: Dict[str, Any],
-    group_plan: Dict[str, Any],
-    output_model,
-    prompt_template,
-    run_name:str ="Unknown",
+
+
+
+# async def generate_enhanced_context(
+#     state:GraphState,
+#     prompt_template:Any,
+#     output_model:Type[T],
+# ) ->T:
+#     """
+#     Shared helper for English generation nodes.
+#     """
+#     context=state["context"]
+
+#     project_title = context.get("project_name")
+#     project_description = context.get("project_idea")
+#     project_details = context.get("project_details")
+
+#     result= await invoke_structured_async(prompt_template=prompt_template,
+#                              prompt_variables={"project_title": project_title, "project_description":project_description, "project_details":project_details},
+#                              output_model=output_model) 
+#     return result 
+
+# async def generate_functional_requirements_group(
+#     enhanced_context: Dict[str, Any],
+#     group_plan: Dict[str, Any],
+#     output_model,
+#     prompt_template,
+#     run_name:str ="Unknown",
     
-) :
-    """
-    Generate functional requirements for a specific group
-    using the shared structured invocation helper.
-    """
+# ) :
+#     """
+#     Generate functional requirements for a specific group
+#     using the shared structured invocation helper.
+#     """
 
-    response = await invoke_structured_async(
-        prompt_template=prompt_template,
-        prompt_variables={
-            "enhanced_context": enhanced_context,
-            "group_plan": group_plan,
-        },
-        output_model=output_model,
-        run_name=run_name
-    )
+#     response = await invoke_structured_async(
+#         prompt_template=prompt_template,
+#         prompt_variables={
+#             "enhanced_context": enhanced_context,
+#             "group_plan": group_plan,
+#         },
+#         output_model=output_model,
+#         run_name=run_name
+#     )
 
-    return response
+#     return response
     
 
 
